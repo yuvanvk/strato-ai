@@ -11,7 +11,7 @@ export const Provider = ({ children }: { children: React.ReactNode }) => (
   >
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="bg-[#f9fafb] dark:bg-[#0A0A0A] !shadow-none">
+      <SidebarInset className="bg-[#f9fafb] dark:bg-[#202020] !shadow-none">
         {children}
       </SidebarInset>
     </SidebarProvider>
