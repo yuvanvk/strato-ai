@@ -22,7 +22,7 @@ import {
 } from "./select";
 import { Button } from "./button";
 import { ArrowUp } from "lucide-react";
-import { Gemini } from "../logos/gemini";
+
 
 const formSchema = z.object({
   input: z.string().min(1),
@@ -62,6 +62,7 @@ export const ChatInput = () => {
             </FormItem>
           )}
         />
+        
 
         <FormField
           control={form.control}
