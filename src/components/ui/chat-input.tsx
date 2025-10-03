@@ -17,6 +17,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "./select";
@@ -44,7 +45,7 @@ export const ChatInput = () => {
 
   return (
     <Form {...form}>
-      <form className="absolute bottom-5 left-1/2 mx-auto w-full max-w-3xl -translate-x-[50%] rounded-lg border bg-[#5522F6]/5 p-2 dark:border-zinc-800">
+      <form className="absolute bottom-5 left-1/2 mx-auto w-full max-w-3xl -translate-x-[50%] rounded-lg border bg-[#5522F6]/5 p-2 dark:border-zinc-800" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="input"
@@ -54,7 +55,7 @@ export const ChatInput = () => {
                 <textarea
                   {...field}
                   rows={4}
-                  className="w-full resize-none p-1 outline-none focus:ring-0 focus:border-transparent"
+                  className="w-full resize-none p-1 outline-none focus:ring-0 focus:border-transparent "
                   placeholder="Ask anything"
                 />
               </FormControl>
@@ -80,6 +81,7 @@ export const ChatInput = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
+                        <SelectLabel>Free Models</SelectLabel>
                         <SelectItem value="gemini-2.5-flash">
                           
                           Gemini 2.5 Flash
