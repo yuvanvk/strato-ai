@@ -93,7 +93,7 @@
   --chart-3: oklch(0.7200 0 0);
   --chart-4: oklch(0.9200 0 0);
   --chart-5: oklch(0.5600 0 0);
-  --sidebar: oklch(0.9900 0 0);
+  --sidebar: hsl(0, 0%, 100%);
   --sidebar-foreground: oklch(0 0 0);
   --sidebar-primary: oklch(0 0 0);
   --sidebar-primary-foreground: oklch(1 0 0);
@@ -148,7 +148,7 @@
   --chart-3: oklch(0.5600 0 0);
   --chart-4: oklch(0.4400 0 0);
   --chart-5: oklch(0.9200 0 0);
-  --sidebar: oklch(0.1800 0 0);
+  --sidebar: hsl(0, 0%, 9%);
   --sidebar-foreground: oklch(1 0 0);
   --sidebar-primary: oklch(1 0 0);
   --sidebar-primary-foreground: oklch(0 0 0);
@@ -159,7 +159,7 @@
   --destructive-foreground: oklch(0 0 0);
   --radius: 0.5rem;
   --font-sans: Geist, sans-serif;
-  --font-mono: Geist Mono, monospace;
+  --font-mono: ;
   --shadow-color: hsl(0 0% 0%);
   --shadow-opacity: 0.18;
   --shadow-blur: 2px;

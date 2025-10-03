@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useRouter } from "next/navigation";
 import { Button } from "./button";
@@ -9,6 +9,7 @@ import {
   SidebarHeader,
   SidebarTrigger,
 } from "./sidebar";
+import { LogIn } from "lucide-react";
 
 export const AppSidebar = () => {
   const router = useRouter();
@@ -27,9 +28,13 @@ export const AppSidebar = () => {
       </SidebarHeader>
       <SidebarContent></SidebarContent>
       <SidebarFooter>
-        <Button onClick={() => router.push("/auth")} variant="secondary" className="cursor-pointer text-[14px] py-5 rounded-xl font-semibold">
+        <button
+          onClick={() => router.push("/auth")}
+          className="text-sm cursor-pointer rounded-xl py-2 font-mono font-medium dark:bg-white dark:text-black bg-[#101010] text-white flex items-center justify-center gap-2"
+        >
+          <LogIn size={18}/>
           Login
-        </Button>
+        </button>
       </SidebarFooter>
     </Sidebar>
   );
