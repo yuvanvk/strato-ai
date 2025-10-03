@@ -10,9 +10,16 @@ import {
   SidebarTrigger,
 } from "./sidebar";
 import { LogIn } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 export const AppSidebar = () => {
   const router = useRouter();
+  const {
+    data: session,
+    isPending, //loading state
+    error, //error object
+    refetch, //refetch the session
+  } = authClient.useSession();
 
   return (
     <Sidebar variant="inset">
@@ -28,13 +35,16 @@ export const AppSidebar = () => {
       </SidebarHeader>
       <SidebarContent></SidebarContent>
       <SidebarFooter>
-        <button
-          onClick={() => router.push("/auth")}
-          className="text-sm cursor-pointer rounded-xl py-2 font-mono font-medium dark:bg-white dark:text-black bg-[#101010] text-white flex items-center justify-center gap-2"
-        >
-          <LogIn size={18}/>
-          Login
-        </button>
+        {!session && (
+          <button
+            onClick={() => router.push("/auth")}
+            className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#101010] py-2 font-mono text-sm font-medium text-white dark:bg-white dark:text-black"
+          >
+            <LogIn size={18} />
+            Login
+          </button>
+        )}
+        {session && <button>{session.user.name}</button>}
       </SidebarFooter>
     </Sidebar>
   );
