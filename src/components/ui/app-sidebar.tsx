@@ -11,6 +11,18 @@ import {
 } from "./sidebar";
 import { LogIn } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "./dropdown-menu";
+
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { Badge } from "./badge";
 
 export const AppSidebar = () => {
   const router = useRouter();
@@ -44,7 +56,38 @@ export const AppSidebar = () => {
             Login
           </button>
         )}
-        {session && <button>{session.user.name}</button>}
+        {session && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center justify-between  gap-x-2 rounded-xl  px-1 py-1 hover:bg-neutral-700 cursor-pointer">
+                <div className="flex items-center gap-2">
+                  <Avatar className="h-6 w-6">
+                    <AvatarImage
+                      src={session.user.image!}
+                      alt={session.user.name}
+                    />
+                    <AvatarFallback>{session.user.name}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col items-start">
+                    <span className="text-sm font-normal">
+                      {session.user.name}
+                    </span>
+                    <span className="text-muted-foreground text-xs capitalize">
+                      free
+                    </span>
+                  </div>
+                </div>
+                <Badge variant={"outline"} className="rounded-full">
+                  Upgrade
+                </Badge>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </SidebarFooter>
     </Sidebar>
   );
