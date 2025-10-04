@@ -9,7 +9,7 @@ import {
   SidebarHeader,
   SidebarTrigger,
 } from "./sidebar";
-import { LogIn } from "lucide-react";
+import { CircleUser, LogIn, LogOut, Sparkle } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import {
   DropdownMenu,
@@ -59,7 +59,7 @@ export const AppSidebar = () => {
         {session && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center justify-between  gap-x-2 rounded-xl  px-1 py-1 hover:bg-neutral-700 cursor-pointer">
+              <button className="flex cursor-pointer items-center justify-between gap-x-2 rounded-xl px-1 py-1 hover:bg-gray-100 dark:hover:bg-neutral-700">
                 <div className="flex items-center gap-2">
                   <Avatar className="h-6 w-6">
                     <AvatarImage
@@ -82,9 +82,20 @@ export const AppSidebar = () => {
                 </Badge>
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuContent className="rounded-xl bg-[#353535]">
+              <DropdownMenuItem disabled className="cursor-pointer">
+                <CircleUser />
+                {session.user.email}
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointe">
+                <Sparkle />
+                Upgrade
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <LogOut />
+                Log out
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
