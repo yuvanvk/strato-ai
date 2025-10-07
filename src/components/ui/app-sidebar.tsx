@@ -80,8 +80,8 @@ export const AppSidebar = () => {
                 </Badge>
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="rounded-xl bg-[#353535]">
-              <DropdownMenuItem disabled className="cursor-pointer">
+            <DropdownMenuContent className="rounded-xl bg-[#353535] ">
+              <DropdownMenuItem disabled className="cursor-pointer ">
                 <CircleUser />
                 {session.user.email}
               </DropdownMenuItem>

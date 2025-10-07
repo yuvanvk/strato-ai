@@ -6,10 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import {
@@ -23,6 +21,7 @@ import {
 } from "./select";
 import { Button } from "./button";
 import { ArrowUp } from "lucide-react";
+import { MODELS } from "@/lib/data";
 
 
 const formSchema = z.object({
@@ -79,13 +78,16 @@ export const ChatInput = () => {
                     <SelectTrigger className="rounded-xl">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="min-w-sm bg-zinc-800 rounded-lg shadow-none">
                       <SelectGroup>
                         <SelectLabel>Free Models</SelectLabel>
-                        <SelectItem value="gemini-2.5-flash">
-                          
-                          Gemini 2.5 Flash
-                        </SelectItem>
+                        {MODELS.map((model) => (
+                          <SelectItem value={model.value} key={model.name} className={`
+                            data-[state=checked]:bg-gradient-to-b data-[state=checked]:from-[#5728f4] data-[state=checked]:to-[#5100FF]
+                          `}>
+                            {model.name}
+                          </SelectItem>
+                        ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
