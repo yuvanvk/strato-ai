@@ -15,9 +15,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "./dropdown-menu";
 
@@ -28,9 +26,9 @@ export const AppSidebar = () => {
   const router = useRouter();
   const {
     data: session,
-    isPending, //loading state
-    error, //error object
-    refetch, //refetch the session
+    isPending, 
+    error, 
+    refetch, 
   } = authClient.useSession();
 
   return (
@@ -87,7 +85,7 @@ export const AppSidebar = () => {
                 <CircleUser />
                 {session.user.email}
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointe">
+              <DropdownMenuItem className="cursor-pointer">
                 <Sparkle />
                 Upgrade
               </DropdownMenuItem>
