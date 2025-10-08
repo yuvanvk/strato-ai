@@ -78,12 +78,12 @@ export const ChatInput = () => {
                     <SelectTrigger className="rounded-xl">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="min-w-sm bg-zinc-800 rounded-lg shadow-none">
+                    <SelectContent className="min-w-sm bg-stone-100 dark:bg-zinc-800 rounded-lg shadow-none">
                       <SelectGroup>
                         <SelectLabel>Free Models</SelectLabel>
                         {MODELS.map((model) => (
                           <SelectItem value={model.value} key={model.name} className={`
-                            data-[state=checked]:bg-gradient-to-b data-[state=checked]:from-[#5728f4] data-[state=checked]:to-[#5100FF]
+                            data-[state=checked]:bg-gradient-to-b data-[state=checked]:from-[#5728f4] data-[state=checked]:to-[#5100FF] data-[state=checked]:text-white
                           `}>
                             {model.name}
                           </SelectItem>
