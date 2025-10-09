@@ -12,3 +12,6 @@ export const signIn = async () => {
   });
 }
 
+export const signOut = async () => {
+  const data = await authClient.signOut();
+} 

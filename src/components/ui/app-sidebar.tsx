@@ -10,7 +10,7 @@ import {
   SidebarTrigger,
 } from "./sidebar";
 import { CircleUser, LogIn, LogOut, Sparkle } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
+import { authClient, signOut } from "@/lib/auth-client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -91,8 +91,10 @@ export const AppSidebar = () => {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="cursor-pointer">
-                <LogOut />
+                <button className="flex items-center gap-2" onClick={async () => await signOut()}>
+                  <LogOut />
                 Log out
+                </button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
