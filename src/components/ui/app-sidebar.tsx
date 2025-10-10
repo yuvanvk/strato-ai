@@ -24,12 +24,7 @@ import { Badge } from "./badge";
 
 export const AppSidebar = () => {
   const router = useRouter();
-  const {
-    data: session,
-    isPending, 
-    error, 
-    refetch, 
-  } = authClient.useSession();
+  const { data: session, isPending, error, refetch } = authClient.useSession();
 
   return (
     <Sidebar variant="inset">
@@ -80,8 +75,8 @@ export const AppSidebar = () => {
                 </Badge>
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="rounded-xl bg-[#353535] ">
-              <DropdownMenuItem disabled className="cursor-pointer ">
+            <DropdownMenuContent className="rounded-xl bg-[#353535]">
+              <DropdownMenuItem disabled className="cursor-pointer">
                 <CircleUser />
                 {session.user.email}
               </DropdownMenuItem>
@@ -90,11 +85,12 @@ export const AppSidebar = () => {
                 Upgrade
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer">
-                <button className="flex items-center gap-2" onClick={async () => await signOut()}>
-                  <LogOut />
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={async () => await signOut()}
+              >
+                <LogOut />
                 Log out
-                </button>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -1,17 +1,57 @@
+import { DeepSeek, Grok } from "@/components/icons/icons";
+
 export const MODELS = [
-    {
+  {
     value: "gemini-2.5-flash",
     name: "Gemini 2.5 Flash",
-    isPremium: false
-    },
-    {
-        value: "gemini-2.5-pro",
-        name: "Gemini 2.5 pro",
-        isPremium: true
-    },
-    {
-        value: "deepseek-r1",
-        name: "Deepseek R1",
-        isPremium: true
-    }
-]
+    isPremium: false,
+  },
+  {
+    value: "gemini-2.5-pro",
+    name: "Gemini 2.5 pro",
+    isPremium: true,
+    icon: DeepSeek
+  },
+  {
+    value: "deepseek-r1",
+    name: "Deepseek R1",
+    isPremium: true,
+    icon: DeepSeek
+  },
+  {
+    value: "gpt-5",
+    name: "GPT-5",
+    isPremium: true,
+    icon: Grok
+  },
+  {
+    value: "gpt-5-mini",
+    name: "GPT-5 mini",
+    isPremium: true,
+    icon: Grok
+  },
+  {
+    value: "gpt-5-nano",
+    name: "GPT-5 nano",
+    isPremium: true,
+    icon: Grok
+  },
+  {
+    value: "gpt-4-mini",
+    name: "GPT-4 mini",
+    isPremium: true,
+    icon: Grok
+  },
+  {
+    value: "gpt-4.1",
+    name: "GPT-4.1",
+    isPremium: true,
+    icon: Grok
+  },
+  {
+    value: "grok-3-mini",
+    name: "Grok-3 mini",
+    isPremium: true,
+    icon: Grok
+  }
+];
