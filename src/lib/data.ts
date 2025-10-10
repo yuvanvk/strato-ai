@@ -11,7 +11,7 @@ export const MODELS = [
     value: "gemini-2.5-pro",
     name: "Gemini 2.5 pro",
     isPremium: true,
-    icon: DeepSeek
+    icon: Gemini
   },
   {
     value: "deepseek-r1",
