@@ -1,4 +1,4 @@
-import { DeepSeek, Gemini, GPT, Grok } from "@/components/icons/icons";
+import { DeepSeek, Gemini, GPT, Grok } from "@/components/svgs/icons";
 
 export const MODELS = [
   {
