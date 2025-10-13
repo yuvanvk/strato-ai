@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { getServerSession } from "@/lib/server";
 
 export async function POST(req: NextRequest) {
   try {
-    // console.log("control here");
-
+    
+    const session = await getServerSession();
+    if(!session) {
+        return NextResponse.json({
+            message: "Unauthorized"
+        }, { status: 400 })
+    }
+    console.log(session);
     const { message, model } = await req.json();
 
     if (!message || !model) {

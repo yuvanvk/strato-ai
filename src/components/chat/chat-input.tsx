@@ -18,9 +18,9 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "./select";
-import { Button } from "./button";
-import { ArrowUp } from "lucide-react";
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { ArrowUp, Lock } from "lucide-react";
 import { MODELS } from "@/lib/data";
 
 const formSchema = z.object({
@@ -97,9 +97,9 @@ export const ChatInput = () => {
                         ))}
                       </SelectGroup>
                       <SelectGroup>
-                        <SelectLabel>Premium Models</SelectLabel>
+                        <SelectLabel className="flex items-center gap-2">Premium Models <Lock size={12}/></SelectLabel>
                         {premiumModels.map((model) => (
-                          <SelectItem
+                          <SelectItem disabled
                             value={model.value}
                             key={model.name}
                             className={`data-[state=checked]:bg-gradient-to-b data-[state=checked]:from-[#5728f4] data-[state=checked]:to-[#5100FF] data-[state=checked]:text-white`}
