@@ -11,7 +11,8 @@ export async function POST(req: NextRequest) {
             message: "Unauthorized"
         }, { status: 400 })
     }
-    console.log(session);
+    
+
     const { message, model } = await req.json();
 
     if (!message || !model) {
@@ -22,7 +23,8 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
-
+    
+    
     const response = await axios.post(
       "https://kravixstudio.com/api/v1/chat",
       {
@@ -37,11 +39,12 @@ export async function POST(req: NextRequest) {
         },
       },
     );
-
+    console.log(response.data);
+    
     return NextResponse.json(response.data);
 
-  } catch (error) {
-    console.log("[CHAT_API]", error);
+  } catch (error: any) {
+    console.log("[CHAT_API]", error.response.data || error);
     return NextResponse.json(
       {
         message: "Internal server error",

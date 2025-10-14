@@ -9,7 +9,9 @@ export const ChatMessages = () => {
 
     return (
         <div className="max-w-4xl mx-auto py-10">
-            Hi from ChatMessages
+            {messages.length > 0 && messages.map((message) => (
+                <div className={`${message.role === "ai" ? "bg-blue-500" : "bg-lime-500"}`}>{message.message}</div>
+            ))}
         </div>
     )
 }

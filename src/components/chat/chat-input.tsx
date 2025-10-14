@@ -42,16 +42,30 @@ export const ChatInput = () => {
     },
   });
 
-  const { messages, setMessages } = useContext(MessageContext);
+  const { setMessages } = useContext(MessageContext);
 
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
 
     try {
+
+      const userMessage = { message: value.input, role: "user" as const };
+      setMessages(msg => [...msg, userMessage])
+
       const response = await axios.post("/api/chat", {
-        message: value.input,
+        message: [{ role: "user", content: value.input }],
         model: value.model
       })
+
+      console.log(response.data);
+      
+      const aiMessage = {
+        message: response.data.aiResponse,
+        role: "ai" as const
+      }
+
+      setMessages(msg => [...msg, aiMessage])
+      value.input = ""
 
     } catch (error) {
       console.log("[CHAT_INPUT]", error);
