@@ -1,17 +1,25 @@
 "use client";
 import { useState } from "react";
-import { SidebarTrigger, useSidebar } from "../ui/sidebar";
-import { ThemeToggler } from "../ui/theme-toggler";
-import { ChatInput } from "./chat-input";
+
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+import { ThemeToggler } from "@/components/ui/theme-toggler";
 import { MessageContext } from "@/context/MessageContext";
+import { ChatMessages } from "./chat-messages";
+import { ChatInput } from "./chat-input";
+import { Message } from "@/context/MessageContext";
 
 export const Chat = () => {
+
   const { state } = useSidebar();
-  const [messages, setMessages] = useState();
+  const [messages, setMessages] = useState<Message[]>([]);
 
   return (
     <MessageContext value={{ messages, setMessages }}>
       <div>
+        <ChatMessages />
+        <ChatInput />
+
+
         <div className="absolute top-4 right-5">
           <ThemeToggler />
         </div>
@@ -20,7 +28,6 @@ export const Chat = () => {
             <SidebarTrigger />
           </div>
         )}
-        <ChatInput />
       </div>
     </MessageContext>
   );

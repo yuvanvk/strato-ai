@@ -24,9 +24,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowUp, Lock } from "lucide-react";
 import { MODELS } from "@/lib/data";
-import axios from "axios";
 import { useContext } from "react";
 import { MessageContext } from "@/context/MessageContext";
+import axios from "axios";
 
 const formSchema = z.object({
   input: z.string().min(1),
@@ -42,7 +42,7 @@ export const ChatInput = () => {
     },
   });
 
-  const {message, setMessages} = useContext(MessageContext);
+  const { messages, setMessages } = useContext(MessageContext);
 
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
@@ -52,8 +52,6 @@ export const ChatInput = () => {
         message: value.input,
         model: value.model
       })
-
-
 
     } catch (error) {
       console.log("[CHAT_INPUT]", error);
