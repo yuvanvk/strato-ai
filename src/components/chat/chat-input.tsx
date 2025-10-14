@@ -10,6 +10,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+
 import {
   Select,
   SelectContent,
@@ -19,9 +20,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { Button } from "@/components/ui/button";
 import { ArrowUp, Lock } from "lucide-react";
 import { MODELS } from "@/lib/data";
+import axios from "axios";
 
 const formSchema = z.object({
   input: z.string().min(1),
@@ -37,8 +40,18 @@ export const ChatInput = () => {
     },
   });
 
-  const onSubmit = (value: z.infer<typeof formSchema>) => {
-    console.log(value);
+  const onSubmit = async (value: z.infer<typeof formSchema>) => {
+
+    try {
+      const response = await axios.post("/api/chat", {
+        message: value.input,
+        model: value.model
+      })
+
+
+    } catch (error) {
+      console.log("[CHAT_INPUT]", error);
+    }
   };
 
   const freeModels = MODELS.filter(model => model.isPremium === false)

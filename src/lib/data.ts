@@ -8,13 +8,13 @@ export const MODELS = [
     icon: Gemini
   },
   {
-    value: "gemini-2.5-pro",
+    value: "Gemini 2.5 pro",
     name: "Gemini 2.5 pro",
     isPremium: true,
     icon: Gemini
   },
   {
-    value: "deepseek-r1",
+    value: "Deepseek-R1",
     name: "Deepseek R1",
     isPremium: true,
     icon: DeepSeek

@@ -1,11 +1,14 @@
 "use client";
+import { useState } from "react";
 import { SidebarTrigger, useSidebar } from "../ui/sidebar";
 import { ThemeToggler } from "../ui/theme-toggler";
 import { ChatInput } from "./chat-input";
 
 export const Chat = () => {
-  const { state } = useSidebar();
 
+  const { state } = useSidebar();
+  const [messages, setMessages] = useState();
+  
   return (
     <div>
       <div className="absolute top-4 right-5">
