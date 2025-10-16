@@ -52,20 +52,34 @@ export const ChatInput = () => {
       const userMessage = { message: value.input, role: "user" as const };
       setMessages(msg => [...msg, userMessage])
 
+      // temporary ai msg
+      const aiThinkingMessage = { message: "Thinking", role: "ai" as const };
+      setMessages(msg => [...msg, aiThinkingMessage]);
+
+
+
       const response = await axios.post("/api/chat", {
         message: [{ role: "user", content: value.input }],
         model: value.model
       })
-
-      console.log(response.data);
       
+
+
       const aiMessage = {
         message: response.data.aiResponse,
         role: "ai" as const
       }
 
-      setMessages(msg => [...msg, aiMessage])
-      value.input = ""
+      setMessages((msg) => {
+        const updated = [...msg]
+        const thinkingMessage = updated.findIndex((m) => m.role === "ai" && m.message === "Thinking")
+        if(thinkingMessage !== -1) updated[thinkingMessage] = aiMessage;
+        else updated.push(aiMessage)
+
+        return updated
+      })
+      
+      form.reset();
 
     } catch (error) {
       console.log("[CHAT_INPUT]", error);
