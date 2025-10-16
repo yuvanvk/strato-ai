@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,11 +14,13 @@ model User {
   createdAt DateTime @default(now())
 
   name          String
-  emailVerified Boolean   @default(false)
+  emailVerified Boolean @default(false)
   image         String?
-  updatedAt     DateTime  @default(now()) @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+
+  updatedAt DateTime  @default(now()) @updatedAt
+  sessions  Session[]
+  accounts  Account[]
+  chats     Chat[]
 
   @@map("user")
 }
@@ -67,4 +68,38 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+model Chat {
+  id        String @id @default(cuid())
+  title     String
+
+  userId    String
+  user      User @relation(fields: [userId], references: [id])
+
+  messages Message[]
+  createdAt DateTime @default(now())
+
+  @@map("chat")
+}
+
+
+model Message {
+  id String @id @default(cuid())
+
+  model String
+  content String
+
+  role  Role 
+  chatId String 
+  chat Chat @relation(fields: [chatId], references: [id])
+
+
+  @@map("message")
+}
+
+
+enum Role {
+  AI
+  USER
 }
