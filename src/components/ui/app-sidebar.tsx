@@ -21,16 +21,19 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Badge } from "./badge";
+import { useTheme } from "next-themes";
 
 export const AppSidebar = () => {
   const router = useRouter();
   const { data: session } = authClient.useSession();
+  const { theme } = useTheme();
+
 
   return (
     <Sidebar variant="inset">
       <SidebarHeader className="space-y-2">
         <div className="flex items-center justify-between gap-1">
-          <img src="/strato.svg" className="h-8 w-8" />
+          <img src={`${theme === "light" ? "/logo-light.svg" : "/logo.svg"}`} className="h-8 w-8" />
           <SidebarTrigger />
         </div>
 

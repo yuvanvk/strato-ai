@@ -7,7 +7,7 @@ export const ChatMessages = () => {
   const { messages } = useContext(MessageContext);
 
   return (
-    <div className="mx-auto max-w-4xl py-10">
+    <div className="mx-auto max-w-4xl py-10 z-10">
       {messages.length > 0 &&
         messages.map((message) => (
           <div key={message.message} className={`${message.role === "ai" ? "flex justify-start" : "flex justify-end"}`}>
