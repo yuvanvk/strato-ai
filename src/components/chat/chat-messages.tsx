@@ -2,6 +2,9 @@
 
 import { MessageContext } from "@/context/MessageContext";
 import { useContext } from "react";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 
 export const ChatMessages = () => {
   const { messages } = useContext(MessageContext);
@@ -32,7 +35,9 @@ export const ChatMessages = () => {
                   {message.message}
                 </span>
               )}
-              {message.message !== "Thinking" && message.message}
+              {message.message !== "Thinking" && <Markdown remarkPlugins={[remarkGfm]}>
+
+                {message.message}</Markdown>}
             </div>
           </div>
         ))}
