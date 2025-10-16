@@ -92,7 +92,7 @@ export const ChatInput = () => {
   return (
     <Form {...form}>
       <form
-        className="fixed bottom-5 left-1/2 mx-auto w-full max-w-3xl -translate-x-[50%] rounded-lg border bg-[#5522F6]/5 p-2 dark:border-zinc-800 z-0"
+        className="absolute bottom-5 left-1/2 mx-auto w-full max-w-3xl -translate-x-[50%] rounded-lg border bg-[#5522F6]/5 p-2 dark:border-zinc-800 z-0"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
