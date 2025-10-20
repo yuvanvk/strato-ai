@@ -108,7 +108,7 @@ export const ChatInput = () => {
                   placeholder="Ask anything"
                 />
               </FormControl>
-              <FormMessage />
+              {/* <FormMessage /> */}
             </FormItem>
           )}
         />

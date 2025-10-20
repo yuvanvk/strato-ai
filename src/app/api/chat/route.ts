@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { getServerSession } from "@/lib/server";
+import prisma from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   try {
@@ -51,5 +52,22 @@ export async function POST(req: NextRequest) {
       },
       { status: 500 },
     );
+  }
+}
+
+
+export async function GET(req: NextRequest) {
+  try {
+    const user = await getServerSession();
+    if(!user) {
+      return NextResponse.json({ message: "Unauthorized"}, { status: 401 })
+    }
+
+    const chats = await prisma.chat.findMany({ where: { userId: user.session.userId }});
+
+    return NextResponse.json({ chats })
+  } catch (error) {
+    console.log("[GET_CHATS]", error);
+    
   }
 }
