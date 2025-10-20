@@ -71,3 +71,48 @@ export async function GET(req: NextRequest) {
     
   }
 }
+
+
+export async function DELETE(req: NextRequest) {
+  try {
+      const user = await getServerSession();
+      if(!user) {
+        return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+      }
+
+      const searchParams = req.nextUrl.searchParams;
+      const id = searchParams.get("id");
+
+      if(!id) {
+        return NextResponse.json({ message: "Id not provided" }, { status: 411 })
+      }
+
+      await prisma.chat.delete({
+        where: {
+          userId: user.session.userId,
+          id
+        }
+      });
+
+      return NextResponse.json({ message: "Deleted successfully" });
+  } catch (error) {
+    console.log("[DELETE_CHAT]", error)
+  }
+}
+
+
+export async function PATCH(req: NextRequest) {
+    try {
+        const user = await getServerSession();
+        if(!user) {
+          return NextResponse.json({ message: "Unauthorized"}, { status: 401 })
+        }
+
+        const { id } = await req.json();
+
+        
+    } catch (error) {
+      console.log("[CHAT_PATCH]", error);
+      
+    }
+}

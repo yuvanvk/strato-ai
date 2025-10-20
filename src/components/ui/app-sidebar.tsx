@@ -61,7 +61,25 @@ export const AppSidebar = () => {
     }
   };
 
-  console.log(chats);
+  const handleDelete = async (chatId: string) => {
+    try {
+      const response = await axios.delete(`/api/chat?id=${chatId}`);
+      getAllUserChats();
+    } catch (error) {
+      console.log("[HANDLE_DELETE]", error)
+    }
+  }
+
+  const handleEdit = async (chatId: string) => {
+    try {
+        const response = await axios.patch("/api/chat", { id: chatId })
+    } catch (error) {
+      console.log("[HANDLE_EDIT]", error);
+      
+    }
+  }
+ 
+
 
   useEffect(() => {
     getAllUserChats();
@@ -87,31 +105,31 @@ export const AppSidebar = () => {
       </SidebarHeader>
       <SidebarContent>
         {chats.length > 0 ? (
-          <div className="flex flex-col space-y-3 py-5 px-1.5">
+          <div className="flex flex-col space-y-0.5 py-5 px-1.5">
             {chats.map((chat) => (
               <div
                 onClick={() => router.push(`/chat/${chat.id}`)}
                 key={chat.id}
                 className={cn(
-                  "group/chat flex cursor-pointer items-center justify-between px-2 py-2 text-sm font-normal text-white hover:bg-neutral-800 transition rounded-lg",
-                  params.id === chat.id && "bg-neutral-800 "
+                  "group/chat flex cursor-pointer items-center justify-between px-2 py-2 text-sm font-normal text-black dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition rounded-lg",
+                  params.id === chat.id && "bg-neutral-200 text-black dark:bg-neutral-800"
                 )}
               >
                 <span>{chat.title}</span>
                 <span className="opacity-0 group-hover/chat:opacity-100">
                   <DropdownMenu>
-                    <DropdownMenuTrigger>
+                    <DropdownMenuTrigger className="outline-none">
                       <BsThreeDots />
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem>
+                    <DropdownMenuContent className="">
+                      <DropdownMenuItem onClick={() => handleEdit(chat.id)}>
                         <div className="flex items-center gap-1.5">
                           <Pencil />
                           Rename
                         </div>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleDelete(chat.id)}>
                         <Trash2 className="text-red-500"/>
                         Delete
                       </DropdownMenuItem>
