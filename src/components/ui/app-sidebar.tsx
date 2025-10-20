@@ -9,7 +9,7 @@ import {
   SidebarHeader,
   SidebarTrigger,
 } from "./sidebar";
-import { CircleUser, LogIn, LogOut, Sparkle } from "lucide-react";
+import { CircleUser, LogIn, LogOut, Pencil, Sparkle, Trash2 } from "lucide-react";
 import { authClient, signOut } from "@/lib/auth-client";
 import {
   DropdownMenu,
@@ -99,7 +99,24 @@ export const AppSidebar = () => {
               >
                 <span>{chat.title}</span>
                 <span className="opacity-0 group-hover/chat:opacity-100">
-                  <BsThreeDots />
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <BsThreeDots />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem>
+                        <div className="flex items-center gap-1.5">
+                          <Pencil />
+                          Rename
+                        </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                        <Trash2 className="text-red-500"/>
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </span>
               </div>
             ))}
