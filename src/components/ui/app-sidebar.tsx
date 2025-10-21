@@ -9,7 +9,14 @@ import {
   SidebarHeader,
   SidebarTrigger,
 } from "./sidebar";
-import { CircleUser, LogIn, LogOut, Pencil, Sparkle, Trash2 } from "lucide-react";
+import {
+  CircleUser,
+  LogIn,
+  LogOut,
+  Pencil,
+  Sparkle,
+  Trash2,
+} from "lucide-react";
 import { authClient, signOut } from "@/lib/auth-client";
 import {
   DropdownMenu,
@@ -23,7 +30,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Badge } from "./badge";
 import { useTheme } from "next-themes";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 import { BsThreeDots } from "react-icons/bs";
@@ -36,6 +43,11 @@ interface Chat {
 
 export const AppSidebar = () => {
   const [chats, setChats] = useState<Chat[] | []>([]);
+  const [editingChatId, setEditingChatId] = useState<string | null>(null);
+  const [rename, setRename] = useState<string>("");
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const router = useRouter();
   const { data: session } = authClient.useSession();
   const { theme } = useTheme();
@@ -66,24 +78,45 @@ export const AppSidebar = () => {
       const response = await axios.delete(`/api/chat?id=${chatId}`);
       getAllUserChats();
     } catch (error) {
-      console.log("[HANDLE_DELETE]", error)
+      console.log("[HANDLE_DELETE]", error);
     }
-  }
+  };
 
-  const handleEdit = async (chatId: string) => {
+  const handleEdit = async (chatId: string, currentName: string) => {
+    setEditingChatId(chatId);
+    setRename(currentName);
+
+    
+      setTimeout(() => {
+        inputRef.current?.focus()
+        inputRef.current?.select();
+      }, 300)
+  };
+
+  const handleRenameSubmit = async (chatId: string) => {
     try {
-        const response = await axios.patch("/api/chat", { id: chatId })
+      const response = await axios.patch("/api/chat", {
+        id: editingChatId,
+        rename
+      })
+      getAllUserChats();
     } catch (error) {
-      console.log("[HANDLE_EDIT]", error);
-      
+      console.log("[RENAME_SUBMIT]", error);
+    } finally {
+      setEditingChatId(null);
+      setRename("");
     }
   }
- 
 
+  const cancelRename = () => {
+    setEditingChatId(null);
+    setRename("");
+  }
 
   useEffect(() => {
     getAllUserChats();
   }, []);
+
 
   return (
     <Sidebar variant="inset">
@@ -105,32 +138,43 @@ export const AppSidebar = () => {
       </SidebarHeader>
       <SidebarContent>
         {chats.length > 0 ? (
-          <div className="flex flex-col space-y-0.5 py-5 px-1.5">
+          <div className="flex flex-col space-y-0.5 px-1.5 py-5">
             {chats.map((chat) => (
               <div
                 onClick={() => router.push(`/chat/${chat.id}`)}
                 key={chat.id}
                 className={cn(
-                  "group/chat flex cursor-pointer items-center justify-between px-2 py-2 text-sm font-normal text-black dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-800 transition rounded-lg",
-                  params.id === chat.id && "bg-neutral-200 text-black dark:bg-neutral-800"
+                  "group/chat flex cursor-pointer items-center justify-between rounded-lg px-2 py-2 text-sm font-normal text-black transition hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-800",
+                  params.id === chat.id &&
+                  "bg-neutral-200 text-black dark:bg-neutral-800",
                 )}
               >
-                <span>{chat.title}</span>
+                {editingChatId === chat.id ? (
+                  <input ref={inputRef} className="outline-none ring-offset-0" value={rename} onKeyDown={(e) => {
+                    if (e.key === "Enter") handleRenameSubmit(chat.id);
+                    if (e.key === "Escape") cancelRename();
+                  }} onChange={(e) => setRename(e.target.value)} autoFocus />
+                ) : (
+                  <span>{chat.title}</span>
+                )}
                 <span className="opacity-0 group-hover/chat:opacity-100">
                   <DropdownMenu>
                     <DropdownMenuTrigger className="outline-none">
                       <BsThreeDots />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="">
-                      <DropdownMenuItem onClick={() => handleEdit(chat.id)}>
-                        <div className="flex items-center gap-1.5">
+                      <DropdownMenuItem>
+                        <div
+                          onClick={() => handleEdit(chat.id, chat.title)}
+                          className="flex items-center gap-1.5"
+                        >
                           <Pencil />
                           Rename
                         </div>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => handleDelete(chat.id)}>
-                        <Trash2 className="text-red-500"/>
+                        <Trash2 className="text-red-500" />
                         Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>

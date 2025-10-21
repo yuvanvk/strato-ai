@@ -108,8 +108,19 @@ export async function PATCH(req: NextRequest) {
           return NextResponse.json({ message: "Unauthorized"}, { status: 401 })
         }
 
-        const { id } = await req.json();
+        const { id, rename } = await req.json();
+        
+        const chat = await prisma.chat.update({
+         where: {
+          id,
+          userId: user.session.userId
+         },
+         data: {
+          title: rename
+         }
+        })
 
+        return NextResponse.json({ message: "Changed successfully"});
         
     } catch (error) {
       console.log("[CHAT_PATCH]", error);
