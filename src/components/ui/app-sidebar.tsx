@@ -86,7 +86,6 @@ export const AppSidebar = () => {
     setEditingChatId(chatId);
     setRename(currentName);
 
-    
       setTimeout(() => {
         inputRef.current?.focus()
         inputRef.current?.select();
@@ -95,7 +94,7 @@ export const AppSidebar = () => {
 
   const handleRenameSubmit = async (chatId: string) => {
     try {
-      const response = await axios.patch("/api/chat", {
+      await axios.patch("/api/chat", {
         id: editingChatId,
         rename
       })

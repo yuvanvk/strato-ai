@@ -10,21 +10,31 @@ export async function POST(req: NextRequest) {
     if(!session) {
         return NextResponse.json({
             message: "Unauthorized"
-        }, { status: 400 })
+        }, { status: 401 })
     }
     
 
-    const { message, model } = await req.json();
+    const { message, model, id } = await req.json();
+    console.log(message, model, id);
+    
 
-    if (!message || !model) {
+    if (!message || !model || !id) {
       return NextResponse.json(
         {
           message: "Invalid inputs",
         },
-        { status: 401 },
+        { status: 400 },
       );
     }
     
+    await prisma.message.create({
+      data: {
+        content: message[0].content,
+        chatId: id,
+        model,
+        role: "USER"
+      }
+    });
     
     const response = await axios.post(
       "https://kravixstudio.com/api/v1/chat",
@@ -40,12 +50,20 @@ export async function POST(req: NextRequest) {
         },
       },
     );
-    console.log(response.data);
+
+    await prisma.message.create({
+      data: {
+        model,
+        chatId: id,
+        role: "AI",
+        content: response.data.aiResponse
+      }
+    })
     
     return NextResponse.json(response.data);
 
   } catch (error: any) {
-    console.log("[CHAT_API]", error.response.data || error);
+    console.log("[CHAT_API]",error?.response?.data || error.message || error);
     return NextResponse.json(
       {
         message: "Internal server error",

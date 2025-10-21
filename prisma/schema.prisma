@@ -94,6 +94,7 @@ model Message {
   chatId String 
   chat Chat @relation(fields: [chatId], references: [id])
 
+  createdAt DateTime @default(now())
 
   @@map("message")
 }

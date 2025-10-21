@@ -11,7 +11,7 @@ export const ChatMessages = () => {
 
   return (
     <div className="z-10 mx-auto max-w-3xl">
-      {messages.length > 0 &&
+      {messages?.length > 0 &&
         messages.map((message) => (
           <div
             key={message.message}

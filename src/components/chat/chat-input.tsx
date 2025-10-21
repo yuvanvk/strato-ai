@@ -27,6 +27,7 @@ import { MODELS } from "@/lib/data";
 import { useContext } from "react";
 import { MessageContext } from "@/context/MessageContext";
 import axios from "axios";
+import { useParams } from "next/navigation";
 
 const formSchema = z.object({
   input: z.string().min(1),
@@ -42,9 +43,11 @@ export const ChatInput = () => {
     },
   });
 
-  const { setMessages } = useContext(MessageContext);
+  const params = useParams<{id: string}>();
 
 
+  const { messages, setMessages } = useContext(MessageContext);
+  
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
 
     try {
@@ -60,7 +63,8 @@ export const ChatInput = () => {
 
       const response = await axios.post("/api/chat", {
         message: [{ role: "user", content: value.input }],
-        model: value.model
+        model: value.model,
+        id: params.id
       })
       
 

@@ -9,9 +9,9 @@ import { ChatInput } from "./chat-input";
 import { Message } from "@/context/MessageContext";
 import { ScrollArea } from "../ui/scroll-area";
 
-export const Chat = () => {
+export const Chat = ({ _messages }: { _messages: Message[] }) => {
   const { state } = useSidebar();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(_messages);
 
   return (
     <MessageContext value={{ messages, setMessages }}>
