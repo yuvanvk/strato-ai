@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "@/lib/server";
 import prisma from "@/lib/prisma";
 import axios from "axios";
+import { getArcjetTokens } from "@/lib/arcjet";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,7 +13,10 @@ export async function POST(req: NextRequest) {
             message: "Unauthorized"
         }, { status: 401 })
     }
-    
+   
+     const remainingTokens = await getArcjetTokens(session.session.userId, req);
+  
+    if(remainingTokens <= 0) return NextResponse.json({ message: "No credits left"}, { status: 500 });
 
     const { message, model, id } = await req.json();
     console.log(message, model, id);
@@ -86,7 +90,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ chats })
   } catch (error) {
     console.log("[GET_CHATS]", error);
-    
+    return NextResponse.json({ message: "Internal server error"}, { status: 500 })
   }
 }
 
@@ -115,6 +119,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ message: "Deleted successfully" });
   } catch (error) {
     console.log("[DELETE_CHAT]", error)
+    return NextResponse.json({ message: "Internal server error"}, { status: 500 })
   }
 }
 
@@ -142,6 +147,6 @@ export async function PATCH(req: NextRequest) {
         
     } catch (error) {
       console.log("[CHAT_PATCH]", error);
-      
+      return NextResponse.json({ message: "Internal server error"}, { status: 500 })
     }
 }
