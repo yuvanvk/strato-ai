@@ -108,7 +108,7 @@ export const ChatInput = () => {
   return (
     <Form {...form}>
       <motion.form
-        className={`absolute bottom-5 left-1/2 z-0 mx-auto w-full max-w-3xl -translate-x-[50%]  rounded-lg border bg-[#5522F6]/5 p-2 dark:border-zinc-800`}
+        className={`absolute bottom-2 md:bottom-5 left-1/2 z-0  md:mx-auto w-full max-w-[96vw]  md:max-w-3xl -translate-x-[50%]  rounded-lg border bg-[#5522F6]/5 p-2 dark:border-zinc-800`}
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -122,7 +122,7 @@ export const ChatInput = () => {
                     {...field}
                     ref={textAreaRef}
                     rows={4}
-                    className="w-full resize-none px-4 pt-2 outline-none focus:border-transparent focus:ring-0"
+                    className="w-full resize-none outline-none focus:border-transparent focus:ring-0"
                     placeholder="Ask anything"
                   />
                   
