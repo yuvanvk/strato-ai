@@ -199,7 +199,7 @@ export const AppSidebar = () => {
         {session && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex cursor-pointer items-center justify-between gap-x-2 rounded-xl px-1 py-1 hover:bg-gray-100 dark:hover:bg-neutral-700">
+              <button className="flex cursor-pointer items-center justify-between gap-x-2 rounded-xl px-1 py-1">
                 <div className="flex items-center gap-2">
                   <Avatar className="h-6 w-6">
                     <AvatarImage
@@ -222,7 +222,7 @@ export const AppSidebar = () => {
                 </Badge>
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="rounded-xl bg-[#353535]">
+            <DropdownMenuContent className="rounded-xl ">
               <DropdownMenuItem disabled className="cursor-pointer">
                 <CircleUser />
                 {session.user.email}

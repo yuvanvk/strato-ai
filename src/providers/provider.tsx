@@ -5,22 +5,21 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
- import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export const Provider = ({ children }: { children: React.ReactNode }) => {
   const isMobile = useIsMobile();
-  
 
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="bg-[#f9fafb] !shadow-none dark:bg-[#202020] !p-0">
-        {isMobile && <SidebarTrigger />}
+      <SidebarInset className="bg-[#f9fafb] !p-0 !shadow-none dark:bg-[#202020]">
+        {isMobile && <div className="absolute left-1 top-2"><SidebarTrigger /></div>}
         {children}
-       <Toaster position="top-right"/>
+        <Toaster position="top-right" />
       </SidebarInset>
     </SidebarProvider>
   );

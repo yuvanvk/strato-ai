@@ -55,6 +55,9 @@ export async function POST(req: NextRequest) {
       },
     );
 
+    console.log(response.data.aiResponse);
+    
+
     await prisma.message.create({
       data: {
         model,
