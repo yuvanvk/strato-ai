@@ -1,4 +1,5 @@
 import { createAuthClient } from "better-auth/react";
+import { redirect } from "next/navigation";
 
 
 export const authClient = createAuthClient({
@@ -14,4 +15,5 @@ export const signIn = async () => {
 
 export const signOut = async () => {
   const data = await authClient.signOut();
+  redirect("/chat")
 } 

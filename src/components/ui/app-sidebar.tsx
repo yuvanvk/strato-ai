@@ -222,7 +222,7 @@ export const AppSidebar = () => {
             <DropdownMenuTrigger asChild>
               <button className="flex cursor-pointer items-center justify-between gap-x-2 rounded-xl px-1 py-1">
                 <div className="flex items-center gap-2">
-                  <Avatar className="h-6 w-6">
+                  <Avatar className="h-8 w-8">
                     <AvatarImage
                       src={session.user.image!}
                       alt={session.user.name}
