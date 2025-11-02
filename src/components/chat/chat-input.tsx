@@ -112,7 +112,7 @@ export const ChatInput = () => {
     <Form {...form}>
       {toShow && <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl font-sans tracking-tighter text-center">Ask strato.</div>}
       <motion.form
-        className={`${params.id === undefined ? "top-1/2 left-1/2 -translate-y-[50%] ":"bottom-2 md:bottom-5 left-1/2"} absolute -translate-x-[50%]  z-0  md:mx-auto w-full max-w-[96vw]  md:max-w-2xl  rounded-2xl border bg-white dark:bg-[#1F2121] px-4 py-3 dark:border-zinc-800 shadow-xs`}
+        className={`${params.id === undefined ? "top-1/2 left-1/2 -translate-y-[50%] ":"bottom-2 md:bottom-5 left-1/2"} absolute -translate-x-[50%]  z-0  md:mx-auto w-full max-w-[96vw]  md:max-w-lg lg:max-w-2xl  rounded-2xl border bg-white dark:bg-[#1F2121] px-4 py-3 dark:border-zinc-800 shadow-xs`}
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField

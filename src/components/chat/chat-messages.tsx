@@ -10,7 +10,7 @@ export const ChatMessages = () => {
   const { messages } = useContext(MessageContext);
 
   return (
-    <div className="z-10 mx-auto max-w-3xl">
+    <div className="z-10 mx-auto max-w-3xl px-5 py-10">
       {messages?.length > 0 &&
         messages.map((message) => (
           <div
