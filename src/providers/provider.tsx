@@ -16,7 +16,7 @@ export const Provider = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset className="bg-[#f9fafb] !p-0 !shadow-none dark:bg-[#202020]">
+      <SidebarInset className="bg-[#FCFCF9] !p-0 !shadow-none dark:bg-[#191a1a]">
         {isMobile && <div className="absolute left-1 top-2"><SidebarTrigger /></div>}
         {children}
         <Toaster position="top-right" />

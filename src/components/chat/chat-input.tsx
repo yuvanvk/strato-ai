@@ -19,12 +19,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowUp, Lock } from "lucide-react";
 import { MODELS } from "@/lib/data";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { MessageContext } from "@/context/MessageContext";
 import { useParams } from "next/navigation";
-import axios from "axios";
 import { toast } from "sonner";
-import { useIsMobile } from "@/hooks/use-mobile";
+import axios from "axios";
+
 
 const formSchema = z.object({
   input: z.string().min(1),
@@ -39,10 +39,11 @@ export const ChatInput = () => {
       model: "gemini-2.5-flash",
     },
   });
-  const isMobile = useIsMobile();
-  const [isExpanded, setIsExpanded] = useState<Boolean>(false);
+  
 
   const params = useParams<{ id: string }>();
+  console.log(params.id);
+  
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const { setMessages } = useContext(MessageContext);
@@ -101,14 +102,17 @@ export const ChatInput = () => {
       el.removeEventListener("input", resize);
     };
   }, []);
+  // "bottom-2 md:bottom-5 left-1/2 -translate-x-[50%]" 
 
   const freeModels = MODELS.filter((model) => model.isPremium === false);
   const premiumModels = MODELS.filter((model) => model.isPremium === true);
+  const toShow = params.id === undefined;
 
   return (
     <Form {...form}>
+      {toShow && <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl font-sans tracking-tighter text-center">Ask strato.</div>}
       <motion.form
-        className={`absolute bottom-2 md:bottom-5 left-1/2 z-0  md:mx-auto w-full max-w-[96vw]  md:max-w-3xl -translate-x-[50%]  rounded-lg border bg-[#5522F6]/5 p-2 dark:border-zinc-800`}
+        className={`${params.id === undefined ? "top-1/2 left-1/2 -translate-y-[50%] ":"bottom-2 md:bottom-5 left-1/2"} absolute -translate-x-[50%]  z-0  md:mx-auto w-full max-w-[96vw]  md:max-w-2xl  rounded-2xl border bg-white dark:bg-[#1F2121] px-4 py-3 dark:border-zinc-800 shadow-xs`}
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -122,8 +126,8 @@ export const ChatInput = () => {
                     {...field}
                     ref={textAreaRef}
                     rows={4}
-                    className="w-full resize-none outline-none focus:border-transparent focus:ring-0"
-                    placeholder="Ask anything"
+                    className="w-full resize-none outline-none focus:border-transparent focus:ring-0 font-sans tracking-tight"
+                    placeholder="How can I help you today?"
                   />
                   
               </FormControl>
@@ -137,12 +141,12 @@ export const ChatInput = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="flex items-center justify-between w-full">
+                <div className="flex items-center justify-end gap-x-2 w-full">
                   <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-                  <SelectTrigger className="w-48 rounded-xl !bg-transparent !px-4 shadow-none focus:outline-none">
+                  <SelectTrigger className="w-48  border-none !bg-transparent !px-4 shadow-none focus:outline-none font-sans tracking-tigher">
                     <SelectValue placeholder="Select model" />
                   </SelectTrigger>
                   <SelectContent className="min-w-sm rounded-lg bg-stone-100 shadow-none dark:bg-zinc-800">

@@ -8,12 +8,15 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarTrigger,
+  useSidebar,
 } from "./sidebar";
 import {
   CircleUser,
   LogIn,
   LogOut,
   Pencil,
+  Plus,
+  Search,
   Sparkle,
   Trash2,
 } from "lucide-react";
@@ -45,12 +48,12 @@ export const AppSidebar = () => {
   const [chats, setChats] = useState<Chat[] | []>([]);
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
   const [rename, setRename] = useState<string>("");
+  const { open } = useSidebar();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const router = useRouter();
   const { data: session } = authClient.useSession();
-  const { theme } = useTheme();
 
   const params = useParams<{ id: string }>();
 
@@ -86,18 +89,18 @@ export const AppSidebar = () => {
     setEditingChatId(chatId);
     setRename(currentName);
 
-      setTimeout(() => {
-        inputRef.current?.focus()
-        inputRef.current?.select();
-      }, 300)
+    setTimeout(() => {
+      inputRef.current?.focus();
+      inputRef.current?.select();
+    }, 300);
   };
 
   const handleRenameSubmit = async (chatId: string) => {
     try {
       await axios.patch("/api/chat", {
         id: editingChatId,
-        rename
-      })
+        rename,
+      });
       getAllUserChats();
     } catch (error) {
       console.log("[RENAME_SUBMIT]", error);
@@ -105,85 +108,103 @@ export const AppSidebar = () => {
       setEditingChatId(null);
       setRename("");
     }
-  }
+  };
 
   const cancelRename = () => {
     setEditingChatId(null);
     setRename("");
-  }
+  };
 
   useEffect(() => {
     getAllUserChats();
   }, []);
 
-
   return (
-    <Sidebar variant="inset">
+    <Sidebar variant="inset" collapsible="icon">
       <SidebarHeader className="space-y-2">
         <div className="flex items-center justify-between gap-1">
-          <img
-            src={`${theme === "light" ? "/logo-light.svg" : "/logo.svg"}`}
-            className="h-8 w-8"
-          />
-          <SidebarTrigger />
+          <img src={`/logo.svg`} className="h-8 w-8" />
+          {open && <SidebarTrigger />}
         </div>
 
         <Button
           onClick={createNewChat}
-          className="cursor-pointer rounded-[10px] bg-gradient-to-b from-[#5728f4] to-[#5100FF] py-5 text-[15px] text-white [box-shadow:0px_-2px_0px_-0px_#2c04b1_inset] hover:opacity-90"
+          className="cursor-pointer rounded-[10px] bg-gradient-to-b from-[#5728f4] to-[#5100FF] text-[15px] text-white [box-shadow:0px_-2px_0px_-0px_#2c04b1_inset] hover:opacity-90"
         >
-          New Chat
+          {open ? "New Chat" : <Plus size={20} />}
         </Button>
       </SidebarHeader>
       <SidebarContent>
-        {chats.length > 0 ? (
-          <div className="flex flex-col space-y-0.5 px-1.5 py-5">
-            {chats.map((chat) => (
-              <div
-                onClick={() => router.push(`/chat/${chat.id}`)}
-                key={chat.id}
-                className={cn(
-                  "group/chat flex cursor-pointer items-center justify-between rounded-lg px-2 py-2 text-sm font-normal text-black transition hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-800",
-                  params.id === chat.id &&
-                  "bg-neutral-200 text-black dark:bg-neutral-800",
-                )}
-              >
-                {editingChatId === chat.id ? (
-                  <input ref={inputRef} className="outline-none ring-offset-0" value={rename} onKeyDown={(e) => {
-                    if (e.key === "Enter") handleRenameSubmit(chat.id);
-                    if (e.key === "Escape") cancelRename();
-                  }} onChange={(e) => setRename(e.target.value)} autoFocus />
-                ) : (
-                  <span>{chat.title}</span>
-                )}
-                <span className="opacity-0 group-hover/chat:opacity-100">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="outline-none">
-                      <BsThreeDots />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="">
-                      <DropdownMenuItem>
-                        <div
-                          onClick={() => handleEdit(chat.id, chat.title)}
-                          className="flex items-center gap-1.5"
-                        >
-                          <Pencil />
-                          Rename
-                        </div>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => handleDelete(chat.id)}>
-                        <Trash2 className="text-red-500" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </span>
+        {open && (
+          <div>
+            {chats.length > 0 ? (
+              <div className="flex flex-col space-y-0.5 px-1.5 py-5">
+                {chats.map((chat) => (
+                  <div
+                    onClick={() => router.push(`/chat/${chat.id}`)}
+                    key={chat.id}
+                    className={cn(
+                      "group/chat flex cursor-pointer items-center justify-between rounded-lg px-2 py-2 text-sm font-normal text-black transition hover:bg-neutral-200 dark:text-white dark:hover:bg-neutral-800",
+                      params.id === chat.id &&
+                        "bg-neutral-200 text-black dark:bg-neutral-800",
+                    )}
+                  >
+                    {editingChatId === chat.id ? (
+                      <input
+                        ref={inputRef}
+                        className="ring-offset-0 outline-none"
+                        value={rename}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") handleRenameSubmit(chat.id);
+                          if (e.key === "Escape") cancelRename();
+                        }}
+                        onChange={(e) => setRename(e.target.value)}
+                        autoFocus
+                      />
+                    ) : (
+                      <span>{chat.title}</span>
+                    )}
+                    <span className="opacity-0 group-hover/chat:opacity-100">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger className="outline-none">
+                          <BsThreeDots />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="">
+                          <DropdownMenuItem>
+                            <div
+                              onClick={() => handleEdit(chat.id, chat.title)}
+                              className="flex items-center gap-1.5"
+                            >
+                              <Pencil />
+                              Rename
+                            </div>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onClick={() => handleDelete(chat.id)}
+                          >
+                            <Trash2 className="text-red-500" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <span className="text-muted-foreground px-3 py-2">
+                {open && "No chats"}
+              </span>
+            )}
           </div>
-        ) : (
-          <span className="text-muted-foreground px-3 py-2">No chats</span>
+        )}
+        {!open && (
+          <div className="flex justify-center mt-1">
+            <div className="rounded-full bg-neutral-800 w-10 h-10 flex items-center justify-center">
+            <Search size={15} />
+          </div>
+          </div>
         )}
       </SidebarContent>
       <SidebarFooter>
@@ -193,7 +214,7 @@ export const AppSidebar = () => {
             className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#101010] py-2 font-mono text-sm font-medium text-white dark:bg-white dark:text-black"
           >
             <LogIn size={18} />
-            Login
+            {open && "Login"}
           </button>
         )}
         {session && (
@@ -208,21 +229,25 @@ export const AppSidebar = () => {
                     />
                     <AvatarFallback>{session.user.name}</AvatarFallback>
                   </Avatar>
-                  <div className="flex flex-col items-start">
-                    <span className="text-sm font-normal">
-                      {session.user.name}
-                    </span>
-                    <span className="text-muted-foreground text-xs capitalize">
-                      free
-                    </span>
-                  </div>
+                  {open && (
+                    <div className="flex flex-col items-start">
+                      <span className="text-sm font-normal">
+                        {session.user.name}
+                      </span>
+                      <span className="text-muted-foreground text-xs capitalize">
+                        free
+                      </span>
+                    </div>
+                  )}
                 </div>
-                <Badge variant={"outline"} className="rounded-full">
-                  Upgrade
-                </Badge>
+                {open && (
+                  <Badge variant={"outline"} className="rounded-full">
+                    Upgrade
+                  </Badge>
+                )}
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="rounded-xl ">
+            <DropdownMenuContent className="rounded-xl">
               <DropdownMenuItem disabled className="cursor-pointer">
                 <CircleUser />
                 {session.user.email}
