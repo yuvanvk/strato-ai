@@ -45,6 +45,8 @@ import {
   CommandItem,
   CommandList,
 } from "./command";
+import { toast } from "sonner";
+
 
 interface Chat {
   id: string;
@@ -69,8 +71,10 @@ export const AppSidebar = () => {
     try {
       const response = await axios.post("/api/create");
       router.push(`/chat/${response.data.chat.id}`);
-    } catch (error) {
+    } catch (error: any) {
+    
       console.log("[APP_SIDEBAR_CREATE_CHAT]", error);
+      toast.error(`${error.response.data.message}`)
     }
   };
 
@@ -79,8 +83,9 @@ export const AppSidebar = () => {
       const response = await axios.get("/api/chat");
 
       setChats(response.data.chats);
-    } catch (error) {
+    } catch (error: any) {
       console.log("[GET_USER_CHATS]", error);
+      toast.error(`${error.response.data.message}`)
     }
   };
 
@@ -88,8 +93,9 @@ export const AppSidebar = () => {
     try {
       const response = await axios.delete(`/api/chat?id=${chatId}`);
       getAllUserChats();
-    } catch (error) {
+    } catch (error: any) {
       console.log("[HANDLE_DELETE]", error);
+      toast.error(`${error.response.data.message}`)
     }
   };
 
@@ -110,8 +116,9 @@ export const AppSidebar = () => {
         rename,
       });
       getAllUserChats();
-    } catch (error) {
+    } catch (error: any) {
       console.log("[RENAME_SUBMIT]", error);
+      toast.error(`${error.response.data.message}`)
     } finally {
       setEditingChatId(null);
       setRename("");
@@ -127,25 +134,28 @@ export const AppSidebar = () => {
     getAllUserChats();
   }, []);
 
-
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if(e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setIsCommandOpen(c => !c)
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsCommandOpen((c) => !c);
       }
-    }
+    };
 
-    document.addEventListener("keydown", down)
-    return () => document.removeEventListener("keydown", down)
-  }, [])
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
 
   return (
     <>
       <Sidebar variant="inset" collapsible="icon">
         <SidebarHeader className="space-y-2">
           <div className="flex items-center justify-between gap-1">
-            <img onClick={(e) => toggleSidebar()} src={`/logo.svg`} className="h-8 w-8" />
+            <img
+              onClick={(e) => toggleSidebar()}
+              src={`/logo.svg`}
+              className="h-8 w-8"
+            />
             {open && <SidebarTrigger />}
           </div>
 
@@ -223,7 +233,10 @@ export const AppSidebar = () => {
           )}
           {!open && (
             <div className="mt-1 flex justify-center">
-              <div onClick={() => setIsCommandOpen((c) => !c)} className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+              <div
+                onClick={() => setIsCommandOpen((c) => !c)}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800"
+              >
                 <Search size={15} />
               </div>
             </div>
@@ -292,19 +305,29 @@ export const AppSidebar = () => {
         </SidebarFooter>
       </Sidebar>
 
-      <CommandDialog open={isCommandOpen} onOpenChange={setIsCommandOpen} className="rounded-xl z-50">
-      <CommandInput placeholder="Type a command or search..." />
-      <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Suggestions">
-          {chats.map((chat) => (
-            <CommandItem onSelect={() => {
-              router.push(`/chat/${chat.id}`)
-            }} className="rounded-lg cursor-pointer" key={chat.id}>{chat.title}</CommandItem>
-          ))}
-        </CommandGroup>
-      </CommandList>
-    </CommandDialog>
+      <CommandDialog
+        open={isCommandOpen}
+        onOpenChange={setIsCommandOpen}
+        className="z-50 rounded-xl"
+      >
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading="Suggestions">
+            {chats.map((chat) => (
+              <CommandItem
+                onSelect={() => {
+                  router.push(`/chat/${chat.id}`);
+                }}
+                className="cursor-pointer rounded-lg"
+                key={chat.id}
+              >
+                {chat.title}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
     </>
   );
 };

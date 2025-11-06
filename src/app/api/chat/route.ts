@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "@/lib/server";
-import prisma from "@/lib/prisma";
-import axios from "axios";
 import { getArcjetTokens } from "@/lib/arcjet";
+import axios from "axios";
+import prisma from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const session = await getServerSession();
     if(!session) {
         return NextResponse.json({
-            message: "Unauthorized"
+            message: "Unauthorized, Please Login."
         }, { status: 401 })
     }
    
@@ -85,7 +85,7 @@ export async function GET(req: NextRequest) {
   try {
     const user = await getServerSession();
     if(!user) {
-      return NextResponse.json({ message: "Unauthorized"}, { status: 401 })
+      return NextResponse.json({ message: "Unauthorized, Please Login."}, { status: 401 })
     }
 
     const chats = await prisma.chat.findMany({ where: { userId: user.session.userId }});
@@ -93,7 +93,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ chats })
   } catch (error) {
     console.log("[GET_CHATS]", error);
-    return NextResponse.json({ message: "Internal server error"}, { status: 500 })
+    return NextResponse.json({ message: "Cannot find Chats"}, { status: 404 })
   }
 }
 
@@ -102,7 +102,7 @@ export async function DELETE(req: NextRequest) {
   try {
       const user = await getServerSession();
       if(!user) {
-        return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+        return NextResponse.json({ message: "Unauthorized, Please Login." }, { status: 401 })
       }
 
       const searchParams = req.nextUrl.searchParams;
@@ -131,7 +131,7 @@ export async function PATCH(req: NextRequest) {
     try {
         const user = await getServerSession();
         if(!user) {
-          return NextResponse.json({ message: "Unauthorized"}, { status: 401 })
+          return NextResponse.json({ message: "Unauthorized, Please Login."}, { status: 401 })
         }
 
         const { id, rename } = await req.json();
@@ -150,6 +150,6 @@ export async function PATCH(req: NextRequest) {
         
     } catch (error) {
       console.log("[CHAT_PATCH]", error);
-      return NextResponse.json({ message: "Internal server error"}, { status: 500 })
+      return NextResponse.json({ message: "Enable to update, try again."}, { status: 500 })
     }
 }

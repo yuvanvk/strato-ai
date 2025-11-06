@@ -42,8 +42,6 @@ export const ChatInput = () => {
   
 
   const params = useParams<{ id: string }>();
-  console.log(params.id);
-  
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const { setMessages } = useContext(MessageContext);
@@ -102,7 +100,7 @@ export const ChatInput = () => {
       el.removeEventListener("input", resize);
     };
   }, []);
-  // "bottom-2 md:bottom-5 left-1/2 -translate-x-[50%]" 
+
 
   const freeModels = MODELS.filter((model) => model.isPremium === false);
   const premiumModels = MODELS.filter((model) => model.isPremium === true);
