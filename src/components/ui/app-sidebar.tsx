@@ -58,7 +58,7 @@ export const AppSidebar = () => {
   const [rename, setRename] = useState<string>("");
   const [isCommandOpen, setIsCommandOpen] = useState(false);
 
-  const { open } = useSidebar();
+  const { open, toggleSidebar } = useSidebar();
   const { data: session } = authClient.useSession();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -145,7 +145,7 @@ export const AppSidebar = () => {
       <Sidebar variant="inset" collapsible="icon">
         <SidebarHeader className="space-y-2">
           <div className="flex items-center justify-between gap-1">
-            <img src={`/logo.svg`} className="h-8 w-8" />
+            <img onClick={(e) => toggleSidebar()} src={`/logo.svg`} className="h-8 w-8" />
             {open && <SidebarTrigger />}
           </div>
 
