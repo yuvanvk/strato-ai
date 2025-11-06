@@ -223,8 +223,8 @@ export const AppSidebar = () => {
           )}
           {!open && (
             <div className="mt-1 flex justify-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
-                <Search onClick={() => setIsCommandOpen((c) => !c)} size={15} />
+              <div onClick={() => setIsCommandOpen((c) => !c)} className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+                <Search size={15} />
               </div>
             </div>
           )}
