@@ -24,11 +24,6 @@ export const Chat = ({ _messages }: { _messages: Message[] }) => {
         <div className="absolute top-4 right-5">
           <ThemeToggler />
         </div>
-        {state === "collapsed" && (
-          <div className="absolute top-2 left-2">
-            <SidebarTrigger />
-          </div>
-        )}
       </div>
     </MessageContext>
   );
