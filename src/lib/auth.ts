@@ -13,9 +13,12 @@ import { Polar } from "@polar-sh/sdk";
 
 import prisma from "./prisma";
 
+
+
 const polarClient = new Polar({
   accessToken: process.env.POLAR_ACCESS_TOKEN,
 });
+
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -47,11 +50,11 @@ export const auth = betterAuth({
           products: [
             {
               productId: "b477a172-c6e7-4f63-a290-50ff1d162f3f",
-              slug: "pro",
+              slug: "yuvan",
             },
           ],
-          successUrl: "/success?checkout_id={CHECKOUT_ID}",
           authenticatedUsersOnly: true,
+          returnUrl: "http://localhost:3000/chat"
         }),
         portal(),
         usage(),
@@ -62,3 +65,6 @@ export const auth = betterAuth({
     }),
   ],
 });
+
+
+

@@ -20,7 +20,7 @@ import {
   Sparkle,
   Trash2,
 } from "lucide-react";
-import { authClient, signOut } from "@/lib/auth-client";
+import { authClient, checkOut, signOut } from "@/lib/auth-client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -286,7 +286,7 @@ export const AppSidebar = () => {
                   <CircleUser />
                   {session.user.email}
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem onClick={async () => await checkOut()} className="cursor-pointer">
                   <Sparkle />
                   Upgrade
                 </DropdownMenuItem>
