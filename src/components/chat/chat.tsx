@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 
-import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { ThemeToggler } from "@/components/ui/theme-toggler";
 import { MessageContext } from "@/context/MessageContext";
 import { ChatMessages } from "./chat-messages";
@@ -10,7 +9,7 @@ import { Message } from "@/context/MessageContext";
 import { ScrollArea } from "../ui/scroll-area";
 
 export const Chat = ({ _messages }: { _messages: Message[] }) => {
-  const { state } = useSidebar();
+
   const [messages, setMessages] = useState<Message[]>(_messages);
 
   return (

@@ -1,7 +1,7 @@
 "use client";
 
-import { MessageContext } from "@/context/MessageContext";
 import { useContext } from "react";
+import { MessageContext } from "@/context/MessageContext";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 

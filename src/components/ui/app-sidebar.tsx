@@ -20,7 +20,7 @@ import {
   Sparkle,
   Trash2,
 } from "lucide-react";
-import { authClient, signOut } from "@/lib/auth-client";
+import { authClient, checkOut, signOut } from "@/lib/auth-client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,7 +81,6 @@ export const AppSidebar = () => {
   const getAllUserChats = async () => {
     try {
       const response = await axios.get("/api/chat");
-
       setChats(response.data.chats);
     } catch (error: any) {
       console.log("[GET_USER_CHATS]", error);
@@ -91,7 +90,7 @@ export const AppSidebar = () => {
 
   const handleDelete = async (chatId: string) => {
     try {
-      const response = await axios.delete(`/api/chat?id=${chatId}`);
+      await axios.delete(`/api/chat?id=${chatId}`);
       getAllUserChats();
     } catch (error: any) {
       console.log("[HANDLE_DELETE]", error);
@@ -287,7 +286,7 @@ export const AppSidebar = () => {
                   <CircleUser />
                   {session.user.email}
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem onClick={async () => await checkOut()} className="cursor-pointer">
                   <Sparkle />
                   Upgrade
                 </DropdownMenuItem>
