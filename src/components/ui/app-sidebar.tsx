@@ -81,7 +81,6 @@ export const AppSidebar = () => {
   const getAllUserChats = async () => {
     try {
       const response = await axios.get("/api/chat");
-
       setChats(response.data.chats);
     } catch (error: any) {
       console.log("[GET_USER_CHATS]", error);
@@ -91,7 +90,7 @@ export const AppSidebar = () => {
 
   const handleDelete = async (chatId: string) => {
     try {
-      const response = await axios.delete(`/api/chat?id=${chatId}`);
+      await axios.delete(`/api/chat?id=${chatId}`);
       getAllUserChats();
     } catch (error: any) {
       console.log("[HANDLE_DELETE]", error);
