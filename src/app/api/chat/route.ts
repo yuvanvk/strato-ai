@@ -136,7 +136,7 @@ export async function PATCH(req: NextRequest) {
 
         const { id, rename } = await req.json();
         
-        const chat = await prisma.chat.update({
+       await prisma.chat.update({
          where: {
           id,
           userId: user.session.userId

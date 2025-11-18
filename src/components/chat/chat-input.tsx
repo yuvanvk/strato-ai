@@ -18,10 +18,10 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { ArrowUp, Lock } from "lucide-react";
-import { MODELS } from "@/lib/data";
 import { useContext, useEffect, useRef } from "react";
 import { MessageContext } from "@/context/MessageContext";
 import { useParams } from "next/navigation";
+import { MODELS } from "@/lib/data";
 import { toast } from "sonner";
 
 import { authClient } from "@/lib/auth-client";

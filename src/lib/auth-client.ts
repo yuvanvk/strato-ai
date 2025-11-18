@@ -24,7 +24,7 @@ export const signOut = async () => {
 
 export const checkOut = async () => {
   
-  const res = await authClient.checkout({
+  await authClient.checkout({
     slug: "pro"
   });
 }
