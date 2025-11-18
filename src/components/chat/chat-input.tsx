@@ -55,11 +55,15 @@ export const ChatInput = () => {
       return
     }
 
+    if(!params.id) {
+      toast("Please create a new chat")
+      return
+    }
+
     try {
       const userMessage = { message: value.input, role: "user" as const };
       setMessages((msg) => [...msg, userMessage]);
 
-      // temporary ai msg
       const aiThinkingMessage = { message: "Thinking", role: "ai" as const };
       setMessages((msg) => [...msg, aiThinkingMessage]);
 
