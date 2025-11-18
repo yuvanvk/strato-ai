@@ -2,21 +2,22 @@ import { betterAuth } from "better-auth";
 import { oneTap } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 
+import { Polar } from "@polar-sh/sdk";
+
 import {
   polar,
   checkout,
-  portal,
-  usage,
   webhooks,
 } from "@polar-sh/better-auth";
-import { Polar } from "@polar-sh/sdk";
 
 import prisma from "./prisma";
 
 
 
-const polarClient = new Polar({
-  accessToken: process.env.POLAR_ACCESS_TOKEN,
+console.log(process.env.POLAR_ACCESS_TOKEN);
+
+export const polarClient = new Polar({
+  accessToken: process.env.POLAR_ACCESS_TOKEN!,
 });
 
 
@@ -50,14 +51,12 @@ export const auth = betterAuth({
           products: [
             {
               productId: "b477a172-c6e7-4f63-a290-50ff1d162f3f",
-              slug: "yuvan",
+              slug: "pro",
             },
           ],
           authenticatedUsersOnly: true,
           returnUrl: "http://localhost:3000/chat"
         }),
-        portal(),
-        usage(),
         webhooks({
           secret: process.env.POLAR_WEBHOOK_SECRET as string,
         }),
@@ -65,6 +64,10 @@ export const auth = betterAuth({
     }),
   ],
 });
+
+
+
+
 
 
 
