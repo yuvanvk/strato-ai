@@ -12,7 +12,7 @@ export const Auth = () => {
     const session = authClient.useSession();
 
     useEffect(() => {
-        if (session) {
+        if (session.data?.session) {
             router.push("/chat");
         }
     }, [session, router])
