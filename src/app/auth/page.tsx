@@ -1,3 +1,5 @@
+"use client";
+
 import { Auth } from "@/components/ui/auth";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
