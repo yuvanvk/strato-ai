@@ -71,10 +71,12 @@ export const AppSidebar = () => {
     try {
       const response = await axios.post("/api/create");
       router.push(`/chat/${response.data.chat.id}`);
-    } catch (error: any) {
+    } catch (error: unknown) {
     
       console.log("[APP_SIDEBAR_CREATE_CHAT]", error);
-      toast.error(`${error.response.data.message}`)
+      if(axios.isAxiosError(error)) {
+        toast.error(error?.response?.data.message)
+      }
     }
   };
 
@@ -82,9 +84,11 @@ export const AppSidebar = () => {
     try {
       const response = await axios.get("/api/chat");
       setChats(response.data.chats);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log("[GET_USER_CHATS]", error);
-      toast.error(`${error.response.data.message}`)
+      if(axios.isAxiosError(error)) {
+        toast.error(error?.response?.data.message)
+      }
     }
   };
 
@@ -92,9 +96,11 @@ export const AppSidebar = () => {
     try {
       await axios.delete(`/api/chat?id=${chatId}`);
       getAllUserChats();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log("[HANDLE_DELETE]", error);
-      toast.error(`${error.response.data.message}`)
+       if(axios.isAxiosError(error)) {
+        toast.error(error?.response?.data.message)
+      }
     }
   };
 
@@ -115,9 +121,11 @@ export const AppSidebar = () => {
         rename,
       });
       getAllUserChats();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log("[RENAME_SUBMIT]", error);
-      toast.error(`${error.response.data.message}`)
+      if(axios.isAxiosError(error)) {
+        toast.error(error?.response?.data.message)
+      }
     } finally {
       setEditingChatId(null);
       setRename("");

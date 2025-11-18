@@ -25,7 +25,7 @@ import { MODELS } from "@/lib/data";
 import { toast } from "sonner";
 
 import { authClient } from "@/lib/auth-client";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 
 const formSchema = z.object({
@@ -90,9 +90,11 @@ export const ChatInput = () => {
       });
 
       form.reset();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log("[CHAT_INPUT]", error);
-      toast.error(error?.response?.data?.message || "Something went wrong");
+      if(axios.isAxiosError(error)) {
+        toast.error(error?.response?.data?.message || "Something went wrong");
+      }
     }
   };
 

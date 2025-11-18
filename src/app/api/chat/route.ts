@@ -55,9 +55,6 @@ export async function POST(req: NextRequest) {
       },
     );
 
-    console.log(response.data.aiResponse);
-    
-
     await prisma.message.create({
       data: {
         model,
@@ -69,8 +66,7 @@ export async function POST(req: NextRequest) {
     
     return NextResponse.json(response.data);
 
-  } catch (error: any) {
-    console.log("[CHAT_API]",error?.response?.data || error.message || error);
+  } catch (error) {
     return NextResponse.json(
       {
         message: "Internal server error",
