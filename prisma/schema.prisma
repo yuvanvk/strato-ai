@@ -16,6 +16,8 @@ model User {
   name          String
   emailVerified Boolean @default(false)
   image         String?
+  pro           Boolean @default(false)
+  credits       Int     @default(0)
 
   updatedAt DateTime  @default(now()) @updatedAt
   sessions  Session[]
@@ -76,7 +78,7 @@ model Chat {
 
   userId          String
   user            User   @relation(fields: [userId], references: [id])
-  converstationId String
+
 
   messages        Message[]
   createdAt       DateTime  @default(now())

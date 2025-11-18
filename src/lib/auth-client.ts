@@ -20,6 +20,8 @@ export const signOut = async () => {
   redirect("/chat")
 } 
 
+
+
 export const checkOut = async () => {
   
   const res = await authClient.checkout({

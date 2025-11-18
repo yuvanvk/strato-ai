@@ -23,6 +23,8 @@ import { useContext, useEffect, useRef } from "react";
 import { MessageContext } from "@/context/MessageContext";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
+
+import { authClient } from "@/lib/auth-client";
 import axios from "axios";
 
 
@@ -39,7 +41,8 @@ export const ChatInput = () => {
       model: "gemini-2.5-flash",
     },
   });
-  
+
+  const { data } = authClient.useSession();
 
   const params = useParams<{ id: string }>();
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -47,6 +50,11 @@ export const ChatInput = () => {
   const { setMessages } = useContext(MessageContext);
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
+    if(!data?.session) {
+      toast("Please Login in order to chat.")
+      return
+    }
+
     try {
       const userMessage = { message: value.input, role: "user" as const };
       setMessages((msg) => [...msg, userMessage]);
