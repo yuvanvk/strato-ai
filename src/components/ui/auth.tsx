@@ -18,6 +18,8 @@ export const Auth = () => {
     }, [session, router])
 
     const handleLogin = async () => {
+        console.log("triggered");
+        
         await signIn();
     };
     return (
