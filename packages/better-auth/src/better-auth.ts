@@ -1,15 +1,14 @@
 import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
-import prisma from "@workspace/db/prisma";
-
+import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 
 export const auth = betterAuth({
-  database: prismaAdapter(prisma, {
-    provider: "postgresql",
+  database: drizzleAdapter(db, {
+    provider: "pg"
   }),
   baseURL: process.env.BETTER_AUTH_URL,
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true
   },
   socialProviders: {
     google: {

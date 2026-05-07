@@ -1,20 +1,23 @@
 {
   "name": "@workspace/db",
   "version": "0.0.1",
-  "type": "module",
-  "private": true,
   "devDependencies": {
     "@types/bun": "latest",
     "@workspace/typescript-config": "workspace:*",
-    "prisma": "^7.8.0"
+    "drizzle-kit": "^0.31.10",
+    "tsx": "^4.21.0"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
-  "dependencies": {
-    "@prisma/client": "^7.8.0"
-  },
   "exports": {
     "./prisma": "./src/index.ts"
+  },
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
+    "postgres": "^3.4.9"
   }
 }

@@ -7,11 +7,13 @@
     "@workspace/typescript-config": "workspace:*"
   },
   "exports": {
-    "./better-auth": "./src/better-auth.ts",
-    "./better-auth-client": "./src/better-auth-client.ts"
+    "./server": "./src/better-auth.ts",
+    "./client": "./src/better-auth-client.ts"
   },
   "dependencies": {
+    "@better-auth/drizzle-adapter": "^1.6.9",
+    "@workspace/db": "workspace:*",
     "better-auth": "^1.6.9",
-    "@workspace/db": "workspace:*"
+    "resend": "^6.12.2"
   }
 }
