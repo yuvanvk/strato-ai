@@ -6,9 +6,13 @@ const app = new Hono({
   strict: false,
 });
 
-const routes = [auth, ai];
+const routes = [
+  { path: "/auth", router: auth },
+  { path: "/ai", router: ai },
+];
 
-routes.forEach((route) => app.basePath("/api/v1").route("/", route));
+const api = app.basePath("/api/v1");
+routes.forEach(({ path, router }) => api.route(path, router));
 
 export default {
   port: 8080,
