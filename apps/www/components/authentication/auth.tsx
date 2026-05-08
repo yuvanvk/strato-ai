@@ -1,5 +1,5 @@
-import { cn } from "@/utils/cn";
-import { Card, CardContent, CardHeader, CardTitle } from "@workspace/ui/card";
+import { cn } from "@workspace/ui/lib/utils";
+import { Button } from "@workspace/ui/components/button";
 
 export const Auth = () => {
   return (
@@ -9,11 +9,10 @@ export const Auth = () => {
       <h1 className="text-4xl font-semibold font-sans tracking-tighter">
         Welcome to Strato AI
       </h1>
-      <Card className=" max-w-md w-full p-3 rounded-2xl my-2">
-        <CardContent>
-          <span>hi</span>
-        </CardContent>
-      </Card>
+
+      <Button variant={"destructive"}>
+        Subscribe
+      </Button>
     </div>
   );
 };

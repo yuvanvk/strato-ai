@@ -10,7 +10,6 @@
   "exports": {
     "./styles.css": "./dist/index.css",
     "./*": "./dist/*.js",
-    "./card": "./src/card.tsx",
     "./styles": "./src/styles.css"
   },
   "license": "MIT",
@@ -36,7 +35,9 @@
     "typescript": "5.9.2"
   },
   "dependencies": {
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "radix-ui": "^1.4.3",
     "tailwind-merge": "^3.5.0"
   }
 }
