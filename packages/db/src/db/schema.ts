@@ -1,6 +1,8 @@
 import { pgTable } from "drizzle-orm/pg-core";
 import * as t from "drizzle-orm/pg-core";
 
+export const roleEnum = t.pgEnum("role", ["assistant", "user"]);
+
 export const user = pgTable("user", {
     id: t.text("id").primaryKey(),
 	name: t.text("name").notNull(),
@@ -45,4 +47,20 @@ export const verification = pgTable("verification", {
 	expiresAt: t.timestamp("expires_at", { precision: 6, withTimezone: true }).notNull(),
 	createdAt: t.timestamp("created_at", { precision: 6, withTimezone: true }).notNull(),
 	updatedAt: t.timestamp("updated_at", { precision: 6, withTimezone: true }).notNull(),
+});
+
+export const message = pgTable("message", {
+	id: t.text("id").primaryKey(),
+	content: t.text("content"),
+	role: roleEnum(),
+	conversationId: t.text("conversation_id").notNull().references(() => conversation.id, { onDelete: "cascade" }),
+	createdAt: t.timestamp("created_at", { precision: 6, withTimezone: true }).notNull()
+});
+
+export const conversation = pgTable("conversation", {
+	id: t.text("id").primaryKey(),
+	title: t.varchar("title", { length: 255 }).notNull().default("Untitled"),
+	userId: t.text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+	createdAt: t.timestamp("created_at", { precision: 6, withTimezone: true }).notNull(),
+	updatedAt: t.timestamp("updated_at", { precision: 6, withTimezone: true }).notNull(),	
 });
