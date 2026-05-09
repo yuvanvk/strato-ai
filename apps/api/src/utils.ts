@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 
 export async function getChatCompletion(
   model: string,
-  converstions?: string[],
+  converstions?: {role: string, content: string}[],
 ) {
   try {
     const response = await axios.post(

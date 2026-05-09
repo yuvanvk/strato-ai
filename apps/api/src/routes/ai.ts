@@ -26,7 +26,9 @@ router.post("/chat", async (c) => {
     let { message, model, conversationId } = body;
 
     conversationId = conversationId ?? randomUUIDv7();
-    let messages = [];
+
+    // Getting the existing messages of conversation if it exists, otherwise create one.
+    let messages: {role: string, content: string}[] = [];
 
     const cached = (await redis.get(`conv:${conversationId}`)) as string;
     if (cached) {
@@ -46,12 +48,13 @@ router.post("/chat", async (c) => {
       } else {
         const dbMessages = await db.query.message.findMany({
           where: eq(messageDB.conversationId, conversationId),
-          with: { content: true, role: true },
         });
-        messages.push(dbMessages);
+        
+        messages = dbMessages.map((msg) => ({ role: msg.role, content: msg.content })) as {role: string, content: string}[];
       }
     }
 
+    // push current message into DB.
     await db.insert(messageDB).values({
       id: randomUUIDv7(),
       content: message,
@@ -60,8 +63,8 @@ router.post("/chat", async (c) => {
       createdAt: new Date(),
     });
 
-    // push current user messages
-    messages.push(message);
+    // push current user message into messages array for redis purpose.
+    messages = [...messages, { role: "user", content: message }]
     return streamSSE(c, async (stream) => {
       let fullContent = "";
 
@@ -84,7 +87,9 @@ router.post("/chat", async (c) => {
           createdAt: new Date(),
         });
 
-        messages.push({ role: "assistant", content: fullContent });
+        messages = [...messages, { role: "assistant", content: fullContent }]
+
+        await redis.set(`conv:${conversationId}`, JSON.stringify(messages), { ex: 7200 });
         await stream.writeSSE({
           data: JSON.stringify({ conversationId }),
           event: "done",
