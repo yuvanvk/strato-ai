@@ -16,11 +16,11 @@ export async function getChatCompletion(
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
         },
+        responseType: "stream"
       },
     );
 
-    const data = response.data.choices[0].message.content;
-    return data;
+    return response.data
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(error.message);
