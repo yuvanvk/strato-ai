@@ -1,15 +1,15 @@
 "use client";
 
 import { memo, useState } from "react";
+import { Logo } from "@/components/logo";
 import { FcGoogle } from "react-icons/fc";
 import { cn } from "@workspace/ui/lib/utils";
-import { Eye, EyeClosed, FingerprintPattern } from "lucide-react";
 import { Label } from "@workspace/ui/components/label";
 import { Input } from "@workspace/ui/components/input";
 import FaultyTerminal from "@/components/FaultyTerminal";
 import { Button } from "@workspace/ui/components/button";
+import { Eye, EyeClosed, FingerprintPattern } from "lucide-react";
 
-const MemoizedTerminal = memo(FaultyTerminal);
 const TERMINAL_PROPS = {
   scale: 1.5,
   gridMul: [2, 1] as [number, number],
@@ -29,128 +29,33 @@ const TERMINAL_PROPS = {
   pageLoadAnimation: true,
   brightness: 0.6,
 } as const;
+const MemoizedTerminal = memo(FaultyTerminal);
 
 export const Auth = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
   return (
     <div
       className={cn(
-        "max-w-3xl mx-auto border-x min-h-screen border-dashed flex flex-col items-center justify-center",
+        "w-full md:max-w-3xl mx-auto sm:border-x min-h-screen border-dashed",
+        "flex flex-col items-center justify-center",
+        "p-3 md:p-0",
       )}
     >
       {/* Card */}
       <div
         className={cn(
-          "p-2 rounded-2xl border border-neutral-800 max-w-lg w-full bg-[#000000] shadow-2xl",
+          "p-2 rounded-2xl max-w-lg w-full",
+          "border border-neutral-900 bg-neutral-950 shadow-2xl",
         )}
       >
         {/* Branding */}
         <div className="h-52 w-full border border-neutral-900 rounded-xl relative overflow-hidden">
           <MemoizedTerminal {...TERMINAL_PROPS} />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <svg
-              fill="none"
-              height="48"
-              viewBox="0 0 48 48"
-              width="48"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g fill="#fff">
-                <path d="m20.5742 20.5713h6.85714v6.85714h-6.85714z" />
-                <path
-                  d="m20.5742 27.4287h6.85714v6.85714h-6.85714z"
-                  opacity=".6"
-                />
-                <path
-                  d="m27.4258 27.4287h6.85714v6.85714h-6.85714z"
-                  opacity=".32"
-                />
-                <path
-                  d="m34.2852 27.4287h6.85714v6.85714h-6.85714z"
-                  opacity=".07"
-                />
-                <path
-                  d="m13.7148 27.4287h6.85714v6.85714h-6.85714z"
-                  opacity=".32"
-                />
-                <path
-                  d="m6.85742 27.4287h6.85714v6.85714h-6.85714z"
-                  opacity=".07"
-                />
-                <path
-                  d="m20.5742 34.2856h6.85714v6.85714h-6.85714z"
-                  opacity=".32"
-                />
-                <path
-                  d="m13.7148 34.2856h6.85714v6.85714h-6.85714z"
-                  opacity=".07"
-                />
-                <path
-                  d="m27.4258 34.2856h6.85714v6.85714h-6.85714z"
-                  opacity=".07"
-                />
-                <path
-                  d="m20.5742 41.1431h6.85714v6.85714h-6.85714z"
-                  opacity=".07"
-                />
-                <path
-                  d="m13.7148 20.5713h6.85714v6.85714h-6.85714z"
-                  opacity=".6"
-                />
-                <path
-                  d="m6.85742 20.5713h6.85714v6.85714h-6.85714z"
-                  opacity=".32"
-                />
-                <path d="m0 20.5713h6.85714v6.85714h-6.85714z" opacity=".07" />
-                <path
-                  d="m27.4258 20.5713h6.85714v6.85714h-6.85714z"
-                  opacity=".6"
-                />
-                <path
-                  d="m34.2852 20.5713h6.85714v6.85714h-6.85714z"
-                  opacity=".32"
-                />
-                <path
-                  d="m41.1426 20.5713h6.85714v6.85714h-6.85714z"
-                  opacity=".07"
-                />
-                <path
-                  d="m20.5742 13.7144h6.85714v6.85714h-6.85714z"
-                  opacity=".6"
-                />
-                <path
-                  d="m13.7148 13.7144h6.85714v6.85714h-6.85714z"
-                  opacity=".32"
-                />
-                <path
-                  d="m13.7148 6.85693h6.85714v6.85714h-6.85714z"
-                  opacity=".07"
-                />
-                <path
-                  d="m6.85742 13.7144h6.85714v6.85714h-6.85714z"
-                  opacity=".07"
-                />
-                <path
-                  d="m27.4258 13.7144h6.85714v6.85714h-6.85714z"
-                  opacity=".32"
-                />
-                <path
-                  d="m27.4258 6.85693h6.85714v6.85714h-6.85714z"
-                  opacity=".07"
-                />
-                <path
-                  d="m34.2852 13.7144h6.85714v6.85714h-6.85714z"
-                  opacity=".07"
-                />
-                <path
-                  d="m20.5742 6.85693h6.85714v6.85714h-6.85714z"
-                  opacity=".32"
-                />
-                <path d="m20.5742 0h6.85714v6.85714h-6.85714z" opacity=".07" />
-              </g>
-            </svg>
+            <Logo />
           </div>
         </div>
 
@@ -162,6 +67,7 @@ export const Auth = () => {
               type="email"
               placeholder="Enter your email address"
               onChange={(e) => setEmail(e.target.value)}
+              className={cn("bg-neutral-900! border-neutral-800!")}
             />
             <span className="text-[13px] text-neutral-500 pl-2">
               We'll never share your email within anyone else.
@@ -175,6 +81,7 @@ export const Auth = () => {
                 placeholder="Enter your Password"
                 type={showPassword ? "text" : "password"}
                 onChange={(e) => setPassword(e.target.value)}
+                className={cn("bg-neutral-900! border-neutral-800!")}
               />
               <Button
                 size={"icon"}
@@ -187,7 +94,9 @@ export const Auth = () => {
           </div>
 
           <Button
-            className={cn("bg-neutral-900 text-white border-neutral-800")}
+            className={cn(
+              "bg-neutral-900 text-neutral-100 border-neutral-800 mt-2",
+            )}
           >
             <FingerprintPattern />
             Login
