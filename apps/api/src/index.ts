@@ -3,8 +3,6 @@ import auth from "@/routes/auth";
 import ai from "@/routes/ai";
 import { cors } from "hono/cors";
 
-
-
 const app = new Hono({
   strict: false,
 });

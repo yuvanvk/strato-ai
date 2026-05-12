@@ -1,12 +1,10 @@
 import { Hono } from "hono";
 import { auth } from "@workspace/better-auth/server";
 
-const router = new Hono({
-    strict: false
-});
+const router = new Hono<{ Bindings: CloudflareBindings }>({ strict: false });
 
 router.on(["POST", "GET", "OPTIONS"], '/*', (c) => {
-    return auth.handler(c.req.raw)
+    return auth(c.env).handler(c.req.raw)
 });
 
 export default router;
