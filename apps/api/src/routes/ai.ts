@@ -2,15 +2,17 @@ import { Hono } from "hono";
 import { eq } from "drizzle-orm";
 import { ChatSchema } from "@/zod";
 import { redis } from "@/services/redis";
+import { Message, Role } from "@workspace/types";
 import { streamSSE } from "hono/streaming";
 import { getChatCompletion } from "@/utils";
 import { conversation, db, message as messageTable } from "@workspace/db";
+import { trim } from "zod";
 
 const router = new Hono();
 
 router.get("/conversations", async (c) => {
   // first check if the user is authenticated and then using user session userId get all the conversations
-  const userId = "temp";
+  const userId = "7qkvH2QYZFgOlq533WXw8iz0p5H5Kjq1";
 
   const conversations = await db.query.conversation.findMany({
     where: eq(conversation.userId, userId),
@@ -31,9 +33,7 @@ router.get("/conversations/:conversationId", async (c) => {
     return c.json({ message: "Invalid Inputs" }, 400);
   }
 
-  let cachedConversation = (await redis.get(
-    `conv:${conversationId}`,
-  ));
+  let cachedConversation = await redis.get(`conv:${conversationId}`);
 
   if (cachedConversation) {
     cachedConversation = JSON.parse(cachedConversation as string);
@@ -60,7 +60,9 @@ router.get("/conversations/:conversationId", async (c) => {
     content: msg.content,
   })) as { role: string; content: string }[];
 
-  await redis.set(`conv:${conversationId}`, JSON.stringify(formattedMessages), { ex: 7200 });
+  await redis.set(`conv:${conversationId}`, JSON.stringify(formattedMessages), {
+    ex: 7200,
+  });
 
   return c.json({ message: "Success", conversation: formattedMessages }, 200);
 });
@@ -80,7 +82,7 @@ router.post("/chat", async (c) => {
     conversationId = conversationId ?? crypto.randomUUID();
 
     // Getting the existing messages of conversation if it exists, otherwise create one.
-    let messages: { role: string; content: string }[] = [];
+    let messages: Message[] = [];
 
     const cached = (await redis.get(`conv:${conversationId}`)) as string;
     if (cached) {
@@ -93,7 +95,7 @@ router.post("/chat", async (c) => {
       if (!existingConv) {
         await db.insert(conversation).values({
           id: conversationId,
-          userId: "temp",
+          userId: "7qkvH2QYZFgOlq533WXw8iz0p5H5Kjq1",
           createdAt: new Date(),
           updatedAt: new Date(),
         });
@@ -105,7 +107,7 @@ router.post("/chat", async (c) => {
         messages = dbMessages.map((msg) => ({
           role: msg.role,
           content: msg.content,
-        })) as { role: string; content: string }[];
+        })) as Message[];
       }
     }
 
@@ -119,18 +121,47 @@ router.post("/chat", async (c) => {
     });
 
     // push current user message into messages array for redis purpose.
-    messages = [...messages, { role: "user", content: message }];
+    messages = [...messages, { role: "user" as Role, content: message }];
     return streamSSE(c, async (stream) => {
       let fullContent = "";
 
       try {
-        const aiStream = await getChatCompletion(model, messages);
+        const reader = await getChatCompletion(model, messages);
 
-        for await (const chunk of aiStream) {
-          const content = chunk.choices?.[0]?.delta?.content;
-          if (content) {
-            fullContent += content;
-            await stream.writeSSE({ data: content, event: "message" });
+        const decoder = new TextDecoder();
+
+        while (true) {
+          const { done, value } = await reader!.read();
+          if (done) break;
+          console.log("value -> ",value);
+          
+          const chunk = decoder.decode(value, { stream: true });
+          console.log("chunk -> ",chunk);
+          
+          for (const line of chunk.split("\n")) {
+            console.log("line -> ", line);
+            
+            const trimmed = line.trim();
+            console.log("trimmed -> ", trimmed);
+            
+            if (!trimmed.startsWith("data: ") || trimmed === "data: [DONE]")
+              continue;
+
+            try {
+              const parsed = JSON.parse(trimmed.slice(6));
+              console.log("parsed -> ", parsed);
+              
+              const token = parsed.choices?.[0]?.delta?.content;
+              console.log("token -> ", token);
+              
+              if (token) {
+                fullContent += token;
+                await stream.writeSSE({
+                  data: JSON.stringify({ token }),
+                  event: "token",
+                });
+              }
+            } catch (error) {}
           }
         }
 
@@ -142,7 +173,10 @@ router.post("/chat", async (c) => {
           createdAt: new Date(),
         });
 
-        messages = [...messages, { role: "assistant", content: fullContent }];
+        messages = [
+          ...messages,
+          { role: "assistant" as Role, content: fullContent },
+        ];
 
         await redis.set(`conv:${conversationId}`, JSON.stringify(messages), {
           ex: 7200,

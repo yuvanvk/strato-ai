@@ -1,29 +1,26 @@
-import axios, { AxiosError } from "axios";
+import { Message } from "@workspace/types";
 
 export async function getChatCompletion(
   model: string,
-  converstions?: {role: string, content: string}[],
+  converstions?: Message[],
 ) {
   try {
-    const response = await axios.post(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        model: "baidu/cobuddy:free",
-        messages: converstions,
-      },
-      {
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions",{
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
         },
-        responseType: "stream"
-      },
-    );
-
-    return response.data
+        body: JSON.stringify({
+          model,
+          messages: converstions,
+          stream: true
+        })
+      })
+      
+      return response.body?.getReader();
   } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.message);
-    }
+    console.log("./utils/getChatCompletion -> ",error);
+    throw new Error("Something went wrong")
   }
 }
