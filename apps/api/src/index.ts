@@ -2,8 +2,9 @@ import { Hono } from "hono";
 import auth from "@/routes/auth";
 import ai from "@/routes/ai";
 import { cors } from "hono/cors";
+import { Bindings } from "./types";
 
-const app = new Hono({
+const app = new Hono<{ Bindings: Bindings }>({
   strict: false,
 });
 

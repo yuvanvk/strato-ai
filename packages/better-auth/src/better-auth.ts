@@ -1,4 +1,4 @@
-import { createDB } from "@workspace/db";
+import { getDB } from "@workspace/db";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { betterAuthOptions } from "./better-auth-options";
@@ -9,8 +9,8 @@ interface CloudflareBindings {
   BETTER_AUTH_URL: string;
 }
 
-export const auth = (env: CloudflareBindings) => {
-  const db = createDB(env.DATABASE_URL)
+export const auth = (env: any) => {
+  const db = getDB(env.DATABASE_URL)
   
   return betterAuth({
     ...betterAuthOptions,

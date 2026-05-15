@@ -1,66 +1,63 @@
-import { pgTable } from "drizzle-orm/pg-core";
-import * as t from "drizzle-orm/pg-core";
+import { sqliteTable } from "drizzle-orm/sqlite-core";
+import * as t from "drizzle-orm/sqlite-core";
 
-export const roleEnum = t.pgEnum("role", ["assistant", "user"]);
-
-export const user = pgTable("user", {
-    id: t.text("id").primaryKey(),
+export const user = sqliteTable("user", {
+	id: t.text("id").primaryKey(),
 	name: t.text("name").notNull(),
-	email: t.varchar("email", { length: 255 }).notNull().unique(),
-	emailVerified: t.boolean("email_verified").notNull(),
+	email: t.text("email").notNull().unique(),
+	emailVerified: t.integer("email_verified").notNull(),
 	image: t.text("image"),
-	createdAt: t.timestamp("created_at", { precision: 6, withTimezone: true }).notNull(),
-	updatedAt: t.timestamp("updated_at", { precision: 6, withTimezone: true }).notNull(),
-})
+	createdAt: t.integer("created_at", { mode: "timestamp_ms" }).notNull(),
+	updatedAt: t.integer("updated_at", { mode: "timestamp_ms" }).notNull(),
+});
 
-export const session = pgTable("session", {
-    id: t.text("id").primaryKey(),
-    userId: t.text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
-    token: t.varchar("token", { length: 255 }).notNull().unique(),
-    expiresAt: t.timestamp("expires_at", { precision: 6, withTimezone: true }).notNull(),
-	ipAddress: t.text("ip_address"),
-	userAgent: t.text("user_agent"),
-	createdAt: t.timestamp("created_at", { precision: 6, withTimezone: true }).notNull(),
-	updatedAt: t.timestamp("updated_at", { precision: 6, withTimezone: true }).notNull(),
-})
-
-export const account = pgTable("account", {
-    id: t.text("id").primaryKey(),
+export const account = sqliteTable("account", {
+	id: t.text("id").primaryKey(),
 	userId: t.text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
 	accountId: t.text("account_id").notNull(),
 	providerId: t.text("provider_id").notNull(),
 	accessToken: t.text("access_token"),
 	refreshToken: t.text("refresh_token"),
-	accessTokenExpiresAt: t.timestamp("access_token_expires_at", { precision: 6, withTimezone: true }),
-	refreshTokenExpiresAt: t.timestamp("refresh_token_expires_at", { precision: 6, withTimezone: true }),
+	accessTokenExpiresAt: t.integer("access_token_expires_at", { mode: "timestamp_ms" }),
+	refreshTokenExpiresAt: t.integer("refresh_token_expires_at", { mode: "timestamp_ms" }),
 	scope: t.text("scope"),
 	idToken: t.text("id_token"),
 	password: t.text("password"),
-	createdAt: t.timestamp("created_at", { precision: 6, withTimezone: true }).notNull(),
-	updatedAt: t.timestamp("updated_at", { precision: 6, withTimezone: true }).notNull(),
-})
+	createdAt: t.integer("created_at", { mode: "timestamp_ms" }).notNull(),
+	updatedAt: t.integer("updated_at", { mode: "timestamp_ms" }).notNull(),
+});
 
-export const verification = pgTable("verification", {
+export const session = sqliteTable("session", {
+	id: t.text("id").primaryKey(),
+	userId: t.text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+	token: t.text("token").notNull().unique(),
+	expiresAt: t.integer("expires_at", { mode: "timestamp_ms" }).notNull(),
+	ipAddress: t.text("ip_address"),
+	userAgent: t.text("user_agent"),
+	createdAt: t.integer("created_at", { mode: "timestamp_ms" }).notNull(),
+	updatedAt: t.integer("updated_at", { mode: "timestamp_ms" }).notNull(),
+});
+
+export const verification = sqliteTable("verification", {
 	id: t.text("id").primaryKey(),
 	identifier: t.text("identifier").notNull(),
 	value: t.text("value").notNull(),
-	expiresAt: t.timestamp("expires_at", { precision: 6, withTimezone: true }).notNull(),
-	createdAt: t.timestamp("created_at", { precision: 6, withTimezone: true }).notNull(),
-	updatedAt: t.timestamp("updated_at", { precision: 6, withTimezone: true }).notNull(),
+	expiresAt: t.integer("expires_at", { mode: "timestamp_ms" }).notNull(),
+	createdAt: t.integer("created_at", { mode: "timestamp_ms" }).notNull(),
+	updatedAt: t.integer("updated_at", { mode: "timestamp_ms" }).notNull(),
 });
 
-export const message = pgTable("message", {
+export const message = sqliteTable("message", {
 	id: t.text("id").primaryKey(),
+	role: t.text("role", { enum: ["assistant", "user"]}).notNull(),
 	content: t.text("content"),
-	role: roleEnum(),
-	conversationId: t.text("conversation_id").notNull().references(() => conversation.id, { onDelete: "cascade" }),
-	createdAt: t.timestamp("created_at", { precision: 6, withTimezone: true }).notNull()
-});
+	conversationId: t.text("conversation_id").notNull().references(() => conversation.id, { onDelete: "cascade" })
+})
 
-export const conversation = pgTable("conversation", {
+export const conversation = sqliteTable("conversation", {
 	id: t.text("id").primaryKey(),
-	title: t.varchar("title", { length: 255 }).notNull().default("Untitled"),
+	title: t.text("title", { length: 255 }).notNull().default("Untitled"),
 	userId: t.text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
-	createdAt: t.timestamp("created_at", { precision: 6, withTimezone: true }).notNull(),
-	updatedAt: t.timestamp("updated_at", { precision: 6, withTimezone: true }).notNull(),	
-});
+	createdAt: t.integer("created_at", { mode: "timestamp_ms" }).notNull(),
+	updatedAt: t.integer("updated_at", { mode: "timestamp_ms" }).notNull(),	
+})

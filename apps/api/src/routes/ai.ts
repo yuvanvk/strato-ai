@@ -5,8 +5,8 @@ import { redis } from "@/services/redis";
 import { Message, Role } from "@workspace/types";
 import { streamSSE } from "hono/streaming";
 import { getChatCompletion } from "@/utils";
-import { conversation, db, message as messageTable } from "@workspace/db";
-import { trim } from "zod";
+import { conversation, db, message as messageTable } from "@workspace/db/";
+
 
 const router = new Hono();
 
