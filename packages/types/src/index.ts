@@ -1,4 +1,5 @@
 type Message = {
+    id?: string,
     role: Role,
     content: string
 }

@@ -1,20 +1,54 @@
-import { D1Database, getDB } from "@workspace/db";
+import { sendEmail } from "./send-email";
 import { betterAuth } from "better-auth";
+import { D1Database, getDB } from "@workspace/db";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
-import { betterAuthOptions } from "./better-auth-options";
 
 interface Bindings {
   D1_DATABASE: D1Database;
+  OPENROUTER_API_KEY: string;
+  BETTER_AUTH_URL: string;
+  BETTER_AUTH_SECRET: string;
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_SECRET: string;
+  RESEND_API_KEY: string;
+  UPSTASH_REDIS_REST_URL: string;
+  UPSTASH_REDIS_REST_TOKEN: string;
 }
 
 export const auth = (env: Bindings) => {
-  const db = getDB(env.D1_DATABASE)
-  
+  const db = getDB(env.D1_DATABASE);
+
   return betterAuth({
-    ...betterAuthOptions,
     database: drizzleAdapter(db, { provider: "sqlite" }),
-    baseURL: process.env.BETTER_AUTH_URL,
-    secret: process.env.BETTER_AUTH_SECRET,
+    appName: "OneChat",
+    basePath: "/api/v1/auth",
+    trustedOrigins: ["http://localhost:3000"],
+    emailAndPassword: {
+      enabled: true,
+      requireEmailVerification: true,
+    },
+    emailVerification: {
+      sendOnSignUp: true,
+      sendVerificationEmail: async ({ user, token }, request) => {
+        const verifyUrl = `http://localhost:3000/verify-email?token=${encodeURIComponent(token)}`;
+        
+        void sendEmail({
+          to: user.email,
+          subject: "Verify your email address",
+          text: `Click the link to verify your email: ${verifyUrl}`,
+        });
+      },
+    },
+    baseURL: env.BETTER_AUTH_URL,
+    advanced: {
+      defaultCookieAttributes: {
+        sameSite: "None",
+        secure: true,
+        partitioned: true,
+        httpOnly: true
+      }
+    },
+    secret: env.BETTER_AUTH_SECRET,
     socialProviders: {
       google: {
         clientId: process.env.GOOGLE_CLIENT_ID as string,
