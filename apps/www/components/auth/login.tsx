@@ -51,7 +51,7 @@ export const Login = () => {
     await authClient.signIn.email({
       email,
       password,
-      callbackURL: "http://localhost:3000/chat",
+      callbackURL: "http://localhost:3000/c/22121",
     });
   }
 

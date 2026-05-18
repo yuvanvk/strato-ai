@@ -1,0 +1,29 @@
+"use client";
+
+import { Message } from "@workspace/types";
+import { cn } from "@workspace/ui/lib/utils";
+import { motion } from "motion/react";
+
+export function MessageCard({ id, content, role }: Message) {
+  const isUser = role === "user";
+  const isAssistant = role === "assistant";
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.2,
+        ease: "easeOut",
+      }}
+      className={cn(
+        isUser &&
+          "w-fit max-w-xs ml-auto px-2 py-1.5 bg-neutral-800 rounded-xl",
+        isAssistant && "max-w-2xl w-full mr-auto p-1.5",
+        "my-2 text-neutral-100 text-[15px]",
+      )}
+    >
+      {content}
+    </motion.div>
+  );
+}
